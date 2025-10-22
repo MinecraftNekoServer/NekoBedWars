@@ -19,7 +19,7 @@
 
 data:
   - locate: '$blocks'
-    stack: WHITE_WOOL;1;§aBlocks;§eClick to view!
+    stack: WHITE_WOOL;1;§a方块;§e点击查看!
     skip: 1
 
   - write: false
@@ -27,24 +27,24 @@ data:
     id: blocks
     items:
       - locate: 'main'
-        stack: WHITE_WOOL;1;§aBlocks;§eClick to view!
+        stack: WHITE_WOOL;1;§a方块;§e点击查看!
         skip: 1
       - locate: '$swords'
-        stack: GOLDEN_SWORD;1;§aMelee;§eClick to view!
+        stack: GOLDEN_SWORD;1;§a近战;§e点击查看!
       - locate: '$armor'
-        stack: CHAINMAIL_BOOTS;1;§aArmor;§eClick to view!
+        stack: CHAINMAIL_BOOTS;1;§a盔甲;§e点击查看!
       - locate: '$tools'
-        stack: STONE_PICKAXE;1;§aTools;§eClick to view!
+        stack: STONE_PICKAXE;1;§a工具;§e点击查看!
       - locate: '$bows'
-        stack: BOW;1;§aRanged;§eClick to view!
+        stack: BOW;1;§a远程;§e点击查看!
       - locate: '$potions'
-        stack: BREWING_STAND;1;§aPotions;§eClick to view!
+        stack: BREWING_STAND;1;§a药水;§e点击查看!
       - locate: '$utility'
-        stack: TNT;1;§aUtility;§eClick to view!
+        stack: TNT;1;§a道具;§e点击查看!
       - stack: GREEN_STAINED_GLASS_PANE;1
         row: 2
         column: 1
-      - stack: WOOL;16;Wool;§7Great for bridging across;§7islands.
+      - stack: WOOL;16;羊毛;§7非常适合跨越岛屿进行搭桥;§7使用。
         price: 4 of iron
         properties: applycolorbyteam
         row: 3
@@ -61,20 +61,20 @@ data:
     id: swords
     items:
       - locate: '$blocks'
-        stack: WHITE_WOOL;1;§aBlocks;§eClick to view!
+        stack: WHITE_WOOL;1;§a方块;§e点击查看!
         skip: 1
       - locate: 'main'
-        stack: GOLDEN_SWORD;1;§aMelee;§eClick to view!
+        stack: GOLDEN_SWORD;1;§a近战;§e点击查看!
       - locate: '$armor'
-        stack: CHAINMAIL_BOOTS;1;§aArmor;§eClick to view!
+        stack: CHAINMAIL_BOOTS;1;§a盔甲;§e点击查看!
       - locate: '$tools'
-        stack: STONE_PICKAXE;1;§aTools;§eClick to view!
+        stack: STONE_PICKAXE;1;§a工具;§e点击查看!
       - locate: '$bows'
-        stack: BOW;1;§aRanged;§eClick to view!
+        stack: BOW;1;§a远程;§e点击查看!
       - locate: '$potions'
-        stack: BREWING_STAND;1;§aPotions;§eClick to view!
+        stack: BREWING_STAND;1;§a药水;§e点击查看!
       - locate: '$utility'
-        stack: TNT;1;§aUtility;§eClick to view!
+        stack: TNT;1;§a道具;§e点击查看!
       - stack: GREEN_STAINED_GLASS_PANE;1
         row: 2
         column: 2
@@ -95,20 +95,20 @@ data:
     id: armor
     items:
       - locate: '$blocks'
-        stack: WHITE_WOOL;1;§aBlocks;§eClick to view!
+        stack: WHITE_WOOL;1;§a方块;§e点击查看!
         skip: 1
       - locate: '$swords'
-        stack: GOLDEN_SWORD;1;§aMelee;§eClick to view!
+        stack: GOLDEN_SWORD;1;§a近战;§e点击查看!
       - locate: 'main'
-        stack: CHAINMAIL_BOOTS;1;§aArmor;§eClick to view!
+        stack: CHAINMAIL_BOOTS;1;§a盔甲;§e点击查看!
       - locate: '$tools'
-        stack: STONE_PICKAXE;1;§aTools;§eClick to view!
+        stack: STONE_PICKAXE;1;§a工具;§e点击查看!
       - locate: '$bows'
-        stack: BOW;1;§aRanged;§eClick to view!
+        stack: BOW;1;§a远程;§e点击查看!
       - locate: '$potions'
-        stack: BREWING_STAND;1;§aPotions;§eClick to view!
+        stack: BREWING_STAND;1;§a药水;§e点击查看!
       - locate: '$utility'
-        stack: TNT;1;§aUtility;§eClick to view!
+        stack: TNT;1;§a道具;§e点击查看!
       - stack: GREEN_STAINED_GLASS_PANE;1
         row: 2
         column: 3
@@ -124,20 +124,20 @@ data:
     id: tools
     items:
       - locate: '$blocks'
-        stack: WHITE_WOOL;1;§aBlocks;§eClick to view!
+        stack: WHITE_WOOL;1;§a方块;§e点击查看!
         skip: 1
       - locate: '$swords'
-        stack: GOLDEN_SWORD;1;§aMelee;§eClick to view!
+        stack: GOLDEN_SWORD;1;§a近战;§e点击查看!
       - locate: '$armor'
-        stack: CHAINMAIL_BOOTS;1;§aArmor;§eClick to view!
+        stack: CHAINMAIL_BOOTS;1;§a盔甲;§e点击查看!
       - locate: 'main'
-        stack: STONE_PICKAXE;1;§aTools;§eClick to view!
+        stack: STONE_PICKAXE;1;§a工具;§e点击查看!
       - locate: '$bows'
-        stack: BOW;1;§aRanged;§eClick to view!
+        stack: BOW;1;§a远程;§e点击查看!
       - locate: '$potions'
-        stack: BREWING_STAND;1;§aPotions;§eClick to view!
+        stack: BREWING_STAND;1;§a药水;§e点击查看!
       - locate: '$utility'
-        stack: TNT;1;§aUtility;§eClick to view!
+        stack: TNT;1;§a道具;§e点击查看!
       - stack: GREEN_STAINED_GLASS_PANE;1
         row: 2
         column: 4
@@ -157,20 +157,20 @@ data:
     id: bows
     items:
       - locate: '$blocks'
-        stack: WHITE_WOOL;1;§aBlocks;§eClick to view!
+        stack: WHITE_WOOL;1;§a方块;§e点击查看!
         skip: 1
       - locate: '$swords'
-        stack: GOLDEN_SWORD;1;§aMelee;§eClick to view!
+        stack: GOLDEN_SWORD;1;§a近战;§e点击查看!
       - locate: '$armor'
-        stack: CHAINMAIL_BOOTS;1;§aArmor;§eClick to view!
+        stack: CHAINMAIL_BOOTS;1;§a盔甲;§e点击查看!
       - locate: '$tools'
-        stack: STONE_PICKAXE;1;§aTools;§eClick to view!
+        stack: STONE_PICKAXE;1;§a工具;§e点击查看!
       - locate: 'main'
-        stack: BOW;1;§aRanged;§eClick to view!
+        stack: BOW;1;§a远程;§e点击查看!
       - locate: '$potions'
-        stack: BREWING_STAND;1;§aPotions;§eClick to view!
+        stack: BREWING_STAND;1;§a药水;§e点击查看!
       - locate: '$utility'
-        stack: TNT;1;§aUtility;§eClick to view!
+        stack: TNT;1;§a道具;§e点击查看!
       - stack: GREEN_STAINED_GLASS_PANE;1
         row: 2
         column: 5
@@ -199,20 +199,20 @@ data:
     id: potions
     items:
       - locate: '$blocks'
-        stack: WHITE_WOOL;1;§aBlocks;§eClick to view!
+        stack: WHITE_WOOL;1;§a方块;§e点击查看!
         skip: 1
       - locate: '$swords'
-        stack: GOLDEN_SWORD;1;§aMelee;§eClick to view!
+        stack: GOLDEN_SWORD;1;§a近战;§e点击查看!
       - locate: '$armor'
-        stack: CHAINMAIL_BOOTS;1;§aArmor;§eClick to view!
+        stack: CHAINMAIL_BOOTS;1;§a盔甲;§e点击查看!
       - locate: '$tools'
-        stack: STONE_PICKAXE;1;§aTools;§eClick to view!
+        stack: STONE_PICKAXE;1;§a工具;§e点击查看!
       - locate: '$bows'
-        stack: BOW;1;§aRanged;§eClick to view!
+        stack: BOW;1;§a远程;§e点击查看!
       - locate: 'main'
-        stack: BREWING_STAND;1;§aPotions;§eClick to view!
+        stack: BREWING_STAND;1;§a药水;§e点击查看!
       - locate: '$utility'
-        stack: TNT;1;§aUtility;§eClick to view!
+        stack: TNT;1;§a道具;§e点击查看!
       - stack: GREEN_STAINED_GLASS_PANE;1
         row: 2
         column: 6
@@ -240,20 +240,20 @@ data:
     id: utility
     items:
       - locate: '$blocks'
-        stack: WHITE_WOOL;1;§aBlocks;§eClick to view!
+        stack: WHITE_WOOL;1;§a方块;§e点击查看!
         skip: 1
       - locate: '$swords'
-        stack: GOLDEN_SWORD;1;§aMelee;§eClick to view!
+        stack: GOLDEN_SWORD;1;§a近战;§e点击查看!
       - locate: '$armor'
-        stack: CHAINMAIL_BOOTS;1;§aArmor;§eClick to view!
+        stack: CHAINMAIL_BOOTS;1;§a盔甲;§e点击查看!
       - locate: '$tools'
-        stack: STONE_PICKAXE;1;§aTools;§eClick to view!
+        stack: STONE_PICKAXE;1;§a工具;§e点击查看!
       - locate: '$bows'
-        stack: BOW;1;§aRanged;§eClick to view!
+        stack: BOW;1;§a远程;§e点击查看!
       - locate: '$potions'
-        stack: BREWING_STAND;1;§aPotions;§eClick to view!
+        stack: BREWING_STAND;1;§a药水;§e点击查看!
       - locate: 'main'
-        stack: TNT;1;§aUtility;§eClick to view!
+        stack: TNT;1;§a道具;§e点击查看!
       - stack: GREEN_STAINED_GLASS_PANE;1
         row: 2
         column: 7

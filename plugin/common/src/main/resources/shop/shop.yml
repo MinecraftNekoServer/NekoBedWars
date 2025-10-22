@@ -211,7 +211,7 @@ data:
           lore:
             - "When using this powder you'll get"
             - "teleported to you spawn point within 6 seconds"
-            - "Warning: Any movement will stop the process"
+            - "警告：任何移动都会停止传送过程"
       - price: 3 of iron
         properties:
           - name: "Trap"

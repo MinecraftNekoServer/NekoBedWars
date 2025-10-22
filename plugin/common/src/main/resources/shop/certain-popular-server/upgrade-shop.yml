@@ -18,7 +18,7 @@
 #
 
 data:
-  - stack: "IRON_CHESTPLATE;1;Protection;Click here to get more resistance to damage!"
+  - stack: "IRON_CHESTPLATE;1;Protection;点击这里获得更强的伤害抗性!"
     column: 2
     price: 4 of diamond
     properties:
@@ -27,7 +27,7 @@ data:
         - type: team
           upgrade-name: protection
 
-  - stack: "IRON_SWORD;1;Sharpness;Kill players quicker!."
+  - stack: "IRON_SWORD;1;Sharpness;更快地击杀玩家!."
     column: 1
     price: 4 of diamond
     properties:
@@ -36,7 +36,7 @@ data:
         - type: team
           upgrade-name: sharpness
 
-  - stack: "GOLDEN_PICKAXE;1;Efficiency;Break Blocks quicker!."
+  - stack: "GOLDEN_PICKAXE;1;Efficiency;更快地破坏方块!."
     price: 4 of diamond
     column: 3
     properties:
@@ -61,46 +61,43 @@ data:
       amount: 1
       display-name: "Forge Upgrade"
 
-  - stack: "BEACON;1;§bHeal Pool;§7Triggers a pool around the base that heals you!"
-    column: 5
-    row: 1
-    properties:
-      name: upgrade
-      entities:
-        - type: team
-          upgrade-name: healpool
-    price: 8 of diamond
-
-  - stack: "LEATHER;1;TRAPS;TRAP YOUR ENEMY"
-    column: 7
-    items:
-      - price: 2 of diamond
-        skip: 1
-        properties:
-          name: upgrade
-          entities:
-            - type: team
-              upgrade-name: blindtrap
-        stack:
-          type: STRING
-          display-name: "§bBlindess trap"
-          lore:
-            - "§7Get informed when an enemy enters a 7 block radius of your base"
-            - "§7Blind the foe and gain an upper advantage!"
-
-      - price: 2 of diamond
-        skip: 1
-        properties:
-          name: upgrade
-          entities:
-            - type: team
-              upgrade-name: minertrap
-        stack:
-          type: STRING
-          display-name: "§bMining Fatigue trap"
-          lore:
-            - "§7Get informed when an enemy enters a 7 block radius of your base"
-            - "§7Slow Down their mining and gain an advantage!"
+  - stack: "BEACON;1;§bHeal Pool;§7触发一个围绕基地的治疗池来治疗你!"
+    column: 5
+    row: 1
+    properties:
+      name: upgrade
+      entities:
+        - type: team
+          upgrade-name: healpool
+    price: 8 of diamond
+
+  - stack: "LEATHER;1;TRAPS;陷阱你的敌人"
+    column: 7
+    items:
+      - price: 2 of diamond
+        skip: 1
+        properties:
+          name: upgrade
+          entities:
+            - type: team
+              upgrade-name: blindtrap
+        stack:
+          type: STRING
+          display-name: "§b失明陷阱"
+          lore:
+            - "§7当敌人进入你基地7格半径范围内时会收到通知"
+            - "§7致盲敌人并获得优势!"
+
+      - price: 2 of diamond
+        skip: 1
+        properties:
+          name: upgrade
+          entities:
+            - type: team
+              upgrade-name: minertrap
+        stack:
+          type: STRING
+          display-name: "§b挖掘疲劳陷阱"
 
   - stack: "GRAY_STAINED_GLASS_PANE;1;*****"
     row: 2

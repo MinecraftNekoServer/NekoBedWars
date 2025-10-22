@@ -116,83 +116,123 @@
 - `%bedwars_leaderboard_score_<排名>_games%` - 排行榜指定排名玩家游戏数
 - `%bedwars_leaderboard_score_<排名>_kd%` - 排行榜指定排名玩家KD比率
 
-## 指令
-
-### 玩家指令
-
-- `/bw join [游戏名]` - 加入指定游戏，如果不指定游戏名则自动加入玩家最多的可用游戏
-- `/bw leave` - 离开当前游戏
-- `/bw autojoin` - 自动加入最佳游戏
-- `/bw list` - 列出所有可用游戏
-- `/bw stats [玩家名]` - 查看个人统计数据，管理员可以查看其他玩家的数据
-- `/bw rejoin` - 重新加入上一场比赛
-- `/bw leaderboard` - 显示排行榜
-- `/bw gamesinv` - 打开游戏菜单
-- `/bw party` - 队伍命令
-- `/bw mainlobby` - 传送到主大厅
-
-### 管理员指令
-
-- `/bw admin add <游戏名> [变体]` - 创建新游戏
-- `/bw admin edit <游戏名>` - 编辑游戏
-- `/bw admin save <游戏名>` - 保存游戏
-- `/bw admin remove <游戏名>` - 删除游戏
-- `/bw admin info <游戏名>` - 查看游戏信息
-
-#### 游戏编辑子命令
-
-- `/bw admin <游戏名> pos1` - 设置游戏区域的第一个角落
-- `/bw admin <游戏名> pos2` - 设置游戏区域的第二个角落
-- `/bw admin <游戏名> lobby` - 设置大厅出生点
-- `/bw admin <游戏名> spec` - 设置观战点
-- `/bw admin <游戏名> minplayers <数量>` - 设置最少玩家数
-- `/bw admin <游戏名> time <秒数>` - 设置游戏时间
-- `/bw admin <游戏名> lobbycountdown <秒数>` - 设置大厅倒计时
-- `/bw admin <游戏名> postgamewaiting <秒数>` - 设置游戏结束后等待时间
-- `/bw admin <游戏名> displayName <名称>` - 设置游戏显示名称
-- `/bw admin <游戏名> fee <费用>` - 设置游戏费用
-
-#### 队伍管理子命令
-
-- `/bw admin <游戏名> team add <队伍名> <颜色> <最大玩家数>` - 添加队伍
-- `/bw admin <游戏名> team remove <队伍名>` - 删除队伍
-- `/bw admin <游戏名> team color <队伍名> <颜色>` - 设置队伍颜色
-- `/bw admin <游戏名> team maxplayers <队伍名> <数量>` - 设置队伍最大玩家数
-- `/bw admin <游戏名> team spawn <队伍名>` - 设置队伍出生点
-- `/bw admin <游戏名> team target <队伍名> looking_at|standing_on` - 设置队伍目标方块
-- `/bw admin <游戏名> jointeam <队伍名>` - 加入指定队伍
-
-#### 资源生成器管理子命令
-
-- `/bw admin <游戏名> spawner add <资源类型>` - 添加资源生成器
-- `/bw admin <游戏名> spawner remove` - 移除当前位置的资源生成器
-- `/bw admin <游戏名> spawner reset` - 重置所有资源生成器
-
-#### 商店管理子命令
-
-- `/bw admin <游戏名> store add` - 添加商店
-- `/bw admin <游戏名> store remove` - 移除商店
-- `/bw admin <游戏名> store type <实体类型>` - 设置商店实体类型
-- `/bw admin <游戏名> store child` - 设置商店为幼体
-- `/bw admin <游戏名> store adult` - 设置商店为成体
-
-#### 配置管理子命令
-
-- `/bw admin <游戏名> config set <键> <值>` - 设置配置值
-- `/bw admin <游戏名> config reset <键>` - 重置配置值
-- `/bw admin <游戏名> config list add <键> <值>` - 向列表添加配置值
-- `/bw admin <游戏名> config list remove <键> <值>` - 从列表移除配置值
-- `/bw admin <游戏名> config list clear <键>` - 清空列表配置
-
-#### 其他管理命令
-
-- `/bw reload` - 重新加载插件
-- `/bw addholo` - 添加全息图
-- `/bw removeholo` - 移除全息图
-- `/bw alljoin <游戏名>` - 强制所有在线玩家加入指定游戏
-- `/bw dump <服务名>` - 转储服务数据
-- `/bw migrate` - 迁移数据
-- `/bw lang <语言代码>` - 更改语言
+## 指令
+
+### 玩家指令
+
+- `/bw join [游戏名]` - 加入指定游戏，如果不指定游戏名则自动加入玩家最多的可用游戏
+- `/bw leave` - 离开当前游戏
+- `/bw autojoin` - 自动加入最佳游戏
+- `/bw list` - 列出所有可用游戏
+- `/bw stats [玩家名]` - 查看个人统计数据，管理员可以查看其他玩家的数据
+- `/bw rejoin` - 重新加入上一场比赛
+- `/bw leaderboard` - 显示排行榜
+- `/bw gamesinv` - 打开游戏菜单
+- `/bw party` - 队伍命令
+- `/bw mainlobby` - 传送到主大厅
+- `/bw group` - 游戏组命令
+- `/bw joingroup` - 加入指定游戏组
+
+### 管理员指令
+
+- `/bw admin add <游戏名> [变体]` - 创建新游戏
+- `/bw admin edit <游戏名>` - 编辑游戏
+- `/bw admin save <游戏名>` - 保存游戏
+- `/bw admin remove <游戏名>` - 删除游戏
+- `/bw admin info <游戏名>` - 查看游戏信息
+- `/bw admin interactive` - 交互式编辑模式
+
+#### 游戏编辑子命令
+
+- `/bw admin <游戏名> pos1` - 设置游戏区域的第一个角落
+- `/bw admin <游戏名> pos2` - 设置游戏区域的第二个角落
+- `/bw admin <游戏名> lobby` - 设置大厅出生点
+- `/bw admin <游戏名> spec` - 设置观战点
+- `/bw admin <游戏名> lobbypos1` - 设置大厅区域的第一个角落
+- `/bw admin <游戏名> lobbypos2` - 设置大厅区域的第二个角落
+- `/bw admin <游戏名> minplayers <数量>` - 设置最少玩家数
+- `/bw admin <游戏名> time <秒数>` - 设置游戏时间
+- `/bw admin <游戏名> lobbycountdown <秒数>` - 设置大厅倒计时
+- `/bw admin <游戏名> postgamewaiting <秒数>` - 设置游戏结束后等待时间
+- `/bw admin <游戏名> displayName <名称>` - 设置游戏显示名称
+- `/bw admin <游戏名> fee <费用>` - 设置游戏费用
+- `/bw admin <游戏名> arenaweather <天气>` - 设置游戏天气
+- `/bw admin <游戏名> prefab <预制配置>` - 应用预制配置
+
+#### 队伍管理子命令
+
+- `/bw admin <游戏名> team add <队伍名> <颜色> <最大玩家数>` - 添加队伍
+- `/bw admin <游戏名> team remove <队伍名>` - 删除队伍
+- `/bw admin <游戏名> team color <队伍名> <颜色>` - 设置队伍颜色
+- `/bw admin <游戏名> team maxplayers <队伍名> <数量>` - 设置队伍最大玩家数
+- `/bw admin <游戏名> team spawn <队伍名>` - 设置队伍出生点
+- `/bw admin <游戏名> team target <队伍名> looking_at|standing_on` - 设置队伍目标方块
+- `/bw admin <游戏名> team bed <队伍名> looking_at|standing_on` - 设置队伍床方块
+- `/bw admin <游戏名> team anchor <队伍名> looking_at|standing_on` - 设置队伍重生锚方块
+- `/bw admin <游戏名> team door <队伍名> looking_at|standing_on` - 设置队伍门方块
+- `/bw admin <游戏名> team cake <队伍名> looking_at|standing_on` - 设置队伍蛋糕方块
+- `/bw admin <游戏名> team list-spawns <队伍名>` - 列出队伍所有出生点
+- `/bw admin <游戏名> team add-spawn <队伍名>` - 为队伍添加出生点
+- `/bw admin <游戏名> team remove-spawn <队伍名>` - 移除队伍指定出生点
+- `/bw admin <游戏名> team reset-spawns <队伍名>` - 重置队伍所有出生点
+- `/bw admin <游戏名> jointeam <队伍名>` - 加入指定队伍
+
+#### 资源生成器管理子命令
+
+- `/bw admin <游戏名> spawner add <资源类型>` - 添加资源生成器
+- `/bw admin <游戏名> spawner remove` - 移除当前位置的资源生成器
+- `/bw admin <游戏名> spawner reset` - 重置所有资源生成器
+- `/bw admin <游戏名> spawner change-type <新类型>` - 更改资源生成器类型
+- `/bw admin <游戏名> spawner custom-name <名称>` - 设置资源生成器自定义名称
+- `/bw admin <游戏名> spawner hologram-type <类型>` - 设置资源生成器全息图类型
+- `/bw admin <游戏名> spawner linked-team <队伍名>` - 链接资源生成器到队伍
+- `/bw admin <游戏名> spawner base-amount <数量>` - 设置资源生成器基础生成数量
+- `/bw admin <游戏名> spawner max-spawned-resources <数量>` - 设置资源生成器最大生成资源数
+- `/bw admin <游戏名> spawner rotation-mode <模式>` - 设置资源生成器旋转模式
+
+#### 商店管理子命令
+
+- `/bw admin <游戏名> store add` - 添加商店
+- `/bw admin <游戏名> store remove` - 移除商店
+- `/bw admin <游戏名> store type <实体类型>` - 设置商店实体类型
+- `/bw admin <游戏名> store child` - 设置商店为幼体
+- `/bw admin <游戏名> store adult` - 设置商店为成体
+- `/bw admin <游戏名> store name <名称>` - 设置商店名称
+- `/bw admin <游戏名> store team <队伍名>` - 链接商店到队伍
+- `/bw admin <游戏名> store file <文件名>` - 设置商店文件
+
+#### 配置管理子命令
+
+- `/bw admin <游戏名> config set <键> <值>` - 设置配置值
+- `/bw admin <游戏名> config reset <键>` - 重置配置值
+- `/bw admin <游戏名> config list add <键> <值>` - 向列表添加配置值
+- `/bw admin <游戏名> config list remove <键> <值>` - 从列表移除配置值
+- `/bw admin <游戏名> config list clear <键>` - 清空列表配置
+- `/bw admin <游戏名> config get <键>` - 获取配置值
+
+#### 远程游戏管理命令
+
+- `/bw admin remote add <服务器名>` - 添加远程服务器
+- `/bw admin remote remove <服务器名>` - 移除远程服务器
+- `/bw admin remote set <服务器名> <游戏名>` - 设置远程服务器游戏
+- `/bw admin remote list` - 列出所有远程服务器
+
+#### 其他管理命令
+
+- `/bw reload` - 重新加载插件
+- `/bw addholo` - 添加全息图
+- `/bw removeholo` - 移除全息图
+- `/bw alljoin <游戏名>` - 强制所有在线玩家加入指定游戏
+- `/bw dump <服务名>` - 转储服务数据
+- `/bw migrate` - 迁移数据
+- `/bw migrate bedwarsrel` - 从BedWarsRel迁移数据
+- `/bw migrate bedwars1058` - 从BedWars1058迁移数据
+- `/bw lang <语言代码>` - 更改语言
+- `/bw npc add` - 添加NPC
+- `/bw cheat give <物品>` - 给予作弊物品
+- `/bw cheat kill <玩家>` - 杀死玩家
+- `/bw cheat build-pop-up-tower` - 建造弹出塔
+- `/bw cheat rebuild-region` - 重建区域
 
 #### 游戏编辑子命令
 
