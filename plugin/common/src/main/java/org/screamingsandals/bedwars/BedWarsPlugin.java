@@ -94,7 +94,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Plugin(
-        id = "ScreamingBedWars",
+        id = "NekoBedWars",
         authors = {"ScreamingSandals <Misat11, iamceph, Pronze, ZlataOvce>"},
         version = VersionInfo.VERSION,
         loadTime = Plugin.LoadTime.POSTWORLD
@@ -286,7 +286,7 @@ public class BedWarsPlugin implements BedwarsAPI {
                             }
                         });
                         Files.move(sbw0_2_x, sbw0_2_x.getParent().resolve("BedWars.old"));
-                        logger.info("Thank you for updating the plugin! We are now in new folder: plugins/ScreamingBedWars :)");
+                        logger.info("Thank you for updating the plugin! We are now in new folder: plugins/NekoBedWars :)");
                     } catch (Throwable e) {
                         logger.error("We couldn't copy your old SBW 0.2.x setup. Sorry :(", e);
                     }
@@ -358,13 +358,13 @@ public class BedWarsPlugin implements BedwarsAPI {
 
         if (!VersionInfo.VERSION.equals(pluginDescription.version())) {
             Server.getConsoleSender().sendMessage(Component.text()
-                    .content("Version in plugin.yml of ScreamingBedWars has been modified! Expected ")
+                    .content("Version in plugin.yml of NekoBedWars has been modified! Expected ")
                     .color(Color.RED)
                     .append(Component.text(VersionInfo.VERSION, Color.GRAY))
                     .append(", got")
                     .append(Component.text(pluginDescription.version(), Color.GRAY))
             );
-            Server.getConsoleSender().sendMessage(Component.text("You should download ScreamingBedWars from official sources!", Color.RED));
+            Server.getConsoleSender().sendMessage(Component.text("You should download NekoBedWars from official sources!", Color.RED));
         }
 
         Server.getConsoleSender().sendMessage(Component

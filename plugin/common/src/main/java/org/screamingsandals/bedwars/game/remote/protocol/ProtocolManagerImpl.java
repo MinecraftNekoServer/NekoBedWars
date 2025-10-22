@@ -197,7 +197,7 @@ public class ProtocolManagerImpl extends ProtocolManager {
         } else if (packet instanceof MinigameServerInfoRequestPacket) {
             var minigameServerInfo = new MinigameServerInfoPacket(
                     Objects.requireNonNull(BedWarsPlugin.getInstance().getServerName(), "This server does not know its name yet!"),
-                    "ScreamingBedWars",
+                    "NekoBedWars",
                     VersionInfo.VERSION + "/" + VersionInfo.BUILD_NUMBER
             );
             var requestingServer = ((MinigameServerInfoRequestPacket) packet).getRequestingServer();
