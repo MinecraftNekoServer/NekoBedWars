@@ -3,7 +3,8 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
         maven("https://repo.screamingsandals.org/public/")
-        // TODO: remove repository when (if) uploaded to gradle plugin portal
+        maven("https://maven.aliyun.com/repository/public") // 国内镜像
+        maven("https://maven.minecraftforge.net")           // Forge 镜像
         maven("https://maven.neoforged.net/releases") {
             content {
                 includeGroup("net.neoforged.licenser")

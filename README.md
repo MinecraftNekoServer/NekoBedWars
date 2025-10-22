@@ -1,60 +1,139 @@
-# Screaming BedWars
-[![Build and publish BedWars master](https://github.com/ScreamingSandals/BedWars/actions/workflows/build-master.yml/badge.svg)](https://github.com/ScreamingSandals/BedWars/actions/workflows/build-master.yml)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/2b72901b108f4577a135faee054d0d6d)](https://www.codacy.com/gh/ScreamingSandals/BedWars/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ScreamingSandals/BedWars&amp;utm_campaign=Badge_Grade)
-[![Translation status](http://weblate.screamingsandals.org/widgets/bedwars/-/0-3-x/svg-badge.svg)](https://github.com/ScreamingSandals/BedWarsLanguage/tree/0.3.x)
-[![Discord](https://img.shields.io/discord/582271436845219842?logo=discord)](https://discord.gg/4xB54Ts)
-[![Spigot](https://img.shields.io/spiget/downloads/63714)](https://www.spigotmc.org/resources/screaming-bedwars-1-9-4-1-17-1.63714/)
+# NekoBedWars
 
-**If you are using version 0.2.x (which you probably are), you are probably looking for the [ver/0.2.x](https://github.com/ScreamingSandals/BedWars/tree/ver/0.2.x) branch instead. This version of readme does NOT apply to 0.2.x!**
+一个基于ScreamingBedWars的灵活的BedWars小游戏插件，适用于Minecraft: Java版。
 
-A highly flexible BedWars plugin with wide Minecraft version support, originally inspired by BedwarsRel.
+## 功能特性
 
-Supported versions: \[1.8.8 - 1.21.10\]. Recommended version: \[1.21.10\]
+- 多人游戏支持
+- 自定义商店系统
+- 统计数据追踪
+- 多种特殊物品
+- 可配置的游戏规则
+- 支持BungeeCord网络
+- 数据库存储支持
 
-## Support
-If you need any help, you can contact us on [Discord](https://discord.gg/4xB54Ts). Please make sure to look into older messages. There are many question already answered. It is really anoying to repeat the same thing over and over.
+## 安装说明
 
-Make sure to check out our [Docs](https://docs.screamingsandals.org) before contacting us on Discord. It will save our time, you know. O:)
+1. 将插件JAR文件放入服务器的`plugins`文件夹中
+2. 启动服务器以生成配置文件
+3. 根据需要配置`config.yml`和商店文件
+4. 重启服务器以应用更改
 
-If you have found any bug, feel free to report it into [Issues](https://github.com/ScreamingSandals/BedWars/issues), we will look into it.
+## 指令
 
-## Features
--   All the basics of BedWars game (Beds, Teams and so on)
--   Other BedWars variants: CakeWars/EggWars/AnchorWars
--   Shop that supports multi-shop per arena!
--   BungeeCord
--   Vault rewards
--   Spectator mode (now, spectators can join running game!)
--   Arena rebuilding (Incredibly quick!)
--   BossBar or XP bar in lobby countdown or with game time
--   Breakable (those are refreshing after arena rebuild) / ignored blocks
--   SpecialItems (RescuePlatform, TNTSheep and so on) - they can be configured in shop too!
--   and many other features
+### 玩家指令
 
-### Customizable
--   Team selecting GUI
--   Auto coloring items (like armor and so)
--   Resource Spawners (you can have as much as you want)
--   Player statistics
--   In fact everything is customizable
--   And many more useful features.
+- `/bw join <游戏名>` - 加入指定游戏
+- `/bw leave` - 离开当前游戏
+- `/bw start` - 开始游戏（需要权限）
+- `/bw stats` - 查看个人统计数据
+- `/bw list` - 列出所有可用游戏
 
-## Compiling
+### 管理员指令
 
-This project uses **Gradle** and requires **JDK 11** or newer. To build it, clone the repository and run:
+- `/bw admin add <游戏名> [变体]` - 创建新游戏
+- `/bw admin edit <游戏名>` - 编辑游戏
+- `/bw admin save <游戏名>` - 保存游戏
+- `/bw admin remove <游戏名>` - 删除游戏
+- `/bw admin info <游戏名>` - 查看游戏信息
 
-```bash
-./gradlew clean build
+## 数据库配置
+
+插件支持MySQL数据库存储统计数据。在`config.yml`中配置数据库连接：
+
+```yaml
+database:
+  host: "localhost"
+  port: 3306
+  db: "database"
+  user: "root"
+  password: "secret"
+  table-prefix: "bw_"
+  type: "mysql"
 ```
 
-On Windows, use:
+## 配置文件
 
-```bat
-gradlew.bat clean build
-```
+### config.yml
 
-The compiled JAR file will be located in the `plugin/{platform}/build/libs` directory (e.g. `plugin/bukkit/build/libs`).
+主要配置文件，包含游戏规则、商店设置、数据库连接等。重要配置项包括：
 
-## License
+- `locale` - 语言设置
+- `debug` - 调试模式
+- `allow-crafting` - 是否允许合成
+- `friendlyfire` - 友军伤害
+- `spawner-holograms` - 资源生成器全息显示
+- `bossbar` - Boss栏设置
+- `sidebar` - 记分板设置
 
-This project is licensed under the **GNU Lesser General Public License v3.0** License - see the [LICENSE](LICENSE) file for details.
+### 商店配置
+
+商店文件位于`shop/shop.yml`，可以自定义商品和价格。
+
+## 地图配置
+
+### 创建新游戏
+
+1. 使用指令 `/bw admin add <游戏名>` 创建新游戏
+2. 使用 `/bw admin edit <游戏名>` 进入编辑模式
+
+### 设置游戏边界
+
+1. 进入游戏世界，站在一个角落
+2. 使用 `/bw admin <游戏名> pos1` 设置第一个角落
+3. 移动到对角，使用 `/bw admin <游戏名> pos2` 设置第二个角落
+
+### 设置大厅和观战点
+
+1. 使用 `/bw admin <游戏名> lobby` 设置大厅出生点
+2. 使用 `/bw admin <游戏名> spec` 设置观战点
+
+### 配置队伍
+
+1. 添加队伍：`/bw admin <游戏名> team add <队伍名> <颜色> <最大玩家数>`
+2. 设置队伍床点：站在床附近，使用 `/bw admin <游戏名> team <队伍名> target looking_at`
+3. 设置队伍出生点：站在出生点，使用 `/bw admin <游戏名> team <队伍名> spawn`
+
+### 添加资源生成器
+
+1. 站在要添加生成器的位置
+2. 使用 `/bw admin <游戏名> spawner add <资源类型>` 添加生成器
+3. 可用的资源类型包括：bronze(青铜)、iron(铁)、gold(金)
+
+### 添加商店
+
+1. 站在要添加商店的位置
+2. 使用 `/bw admin <游戏名> store add` 添加商店
+3. 可选：设置商店实体类型 `/bw admin <游戏名> store type <实体类型>`
+
+### 保存游戏
+
+完成配置后，使用 `/bw admin <游戏名> save` 保存游戏
+
+## 特殊物品
+
+- 传送粉 (Warp Powder)
+- 陷阱 (Trap)
+- 磁力鞋 (Magnet Shoes)
+- 追踪器 (Tracker)
+- 救援平台 (Rescue Platform)
+- 箭矢阻挡器 (Arrow Blocker)
+- 防护墙 (Protection Wall)
+- 铁傀儡 (Golem)
+- TNT羊 (TNT Sheep)
+- 火球 (Throwable Fireball)
+- 造桥蛋 (Bridge Egg)
+
+## 权限节点
+
+### 玩家权限
+
+- `bw.cmd.join` - 加入游戏
+- `bw.cmd.leave` - 离开游戏
+- `bw.cmd.start` - 开始游戏
+- `bw.cmd.stats` - 查看统计数据
+
+### 管理员权限
+
+- `bw.admin` - 管理员权限
+- `bw.admin.alljoin` - 强制加入任何游戏
