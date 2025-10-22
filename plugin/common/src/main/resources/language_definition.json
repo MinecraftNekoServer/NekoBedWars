@@ -1,0 +1,6 @@
+{
+  "languages": {
+    "en-US": "languages/en_US.json",
+    "zh-CN": "languages/zh_CN.json"
+  }
+}

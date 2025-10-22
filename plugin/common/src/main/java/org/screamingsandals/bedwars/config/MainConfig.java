@@ -71,7 +71,7 @@ public class MainConfig {
             var generator = new ConfigGenerator(loader, configurationNode);
 
             generator.start()
-                .key("locale").defValue("en")
+                .key("locale").defValue("zh-CN")
                 .key("prefix").defValue("[BW]")
                 .key("debug").defValue(false)
                 .key("allow-crafting").defValue(false)

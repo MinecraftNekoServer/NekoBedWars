@@ -13,7 +13,7 @@ pluginManagement {
     }
 }
 
-rootProject.name = "BedWars-parent"
+rootProject.name = "NekoBedWars"
 setupProject("BedWars-API", "api")
 setupProject("BedWars-protocol", "protocol")
 setupProject("BedWars-common", "plugin/common")
