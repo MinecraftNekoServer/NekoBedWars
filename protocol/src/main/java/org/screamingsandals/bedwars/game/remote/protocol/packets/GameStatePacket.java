@@ -56,7 +56,7 @@ public class GameStatePacket implements Packet {
     private final int elapsed;
     private final @Nullable Integer maxTime;
     private final boolean isTimeMoving;
-    private long generationTime = 0; // millis
+    private long generationTime = 0;
 
     public GameStatePacket(@NotNull DataInputStream dataInputStream) throws IOException {
         server = PacketUtils.readStandardUTF(dataInputStream);

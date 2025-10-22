@@ -31,7 +31,6 @@ import org.screamingsandals.bedwars.game.remote.protocol.packets.JoinGamePacket;
 import org.screamingsandals.bedwars.game.remote.protocol.ProtocolManagerImpl;
 import org.screamingsandals.bedwars.lib.debug.Debug;
 import org.screamingsandals.bedwars.player.BedWarsPlayer;
-import org.screamingsandals.bedwars.utils.BungeeUtils;
 import org.screamingsandals.lib.spectator.Component;
 
 import java.io.File;
@@ -182,7 +181,7 @@ public class RemoteGameImpl implements RemoteGame {
     @Override
     public void joinToGame(@NotNull BWPlayer p) {
         if (!(p instanceof BedWarsPlayer)) {
-            throw new IllegalArgumentException("Provided instance of player is not created by BedWars plugin!");
+            throw new IllegalArgumentException("提供的玩家实例不是由BedWars插件创建的!");
         }
         var player = (BedWarsPlayer) p;
 
@@ -196,11 +195,11 @@ public class RemoteGameImpl implements RemoteGame {
                 e.printStackTrace();
             }
         }
-        BungeeUtils.sendBungeeMessage(player, out -> {
-            out.writeUTF("Connect");
-            out.writeUTF(remoteServer);
-        });
-        Debug.info("Player " + player.getName() + " joins a remote game "
-                + (remoteGameIdentifier != null ? remoteGameIdentifier : "(legacy bungee mode)") + " on server " + remoteServer + " (local identification is " +  uuid + "/" + name + ")");
+//        BungeeUtils.sendBungeeMessage(player, out -> {
+//            out.writeUTF("Connect");
+//            out.writeUTF(remoteServer);
+//        });
+        Debug.info("玩家 " + player.getName() + " 加入远程游戏 "
+                + (remoteGameIdentifier != null ? remoteGameIdentifier : "(旧版bungee模式)") + " 位于服务器 " + remoteServer + " (本地标识为 " +  uuid + "/" + name + ")");
     }
 }
