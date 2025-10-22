@@ -71,35 +71,11 @@ public class ProtocolManagerImpl extends ProtocolManager {
 
     @OnPostEnable
     public void onPostEnable() {
-        var communicationType = MainConfig.getInstance().node("bungee", "communication", "type").getString("bungee");
+        var communicationType = "socket";
         switch (communicationType) {
-            case "bungee": {
-                if (Server.getProxyType() != ProxyType.NONE) {
-                    registration = CustomPayload.registerIncomingChannel("BungeeCord", (player, bytes) -> {
-                        try {
-                            var transformedBytes = getMessenger().incomingPacketTransformer(bytes);
-                            if (transformedBytes == null) {
-                                return;
-                            }
-
-                            processIncoming(transformedBytes);
-                        } catch (Exception e) {
-                            logger.error("Error while receiving message using BungeeCord plugin messaging channel", e);
-                        }
-                    });
-                    messenger = new BungeeCordMessenger(payload -> CustomPayload.send("BungeeCord", payload));
-                    if (Server.getProxyType() == ProxyType.VELOCITY) {
-                        logger.warn(
-                                "Velocity does not implement the BungeeCord plugin messaging channel the same way as BungeeCord does," +
-                                    " which may result in important messages not being delivered. Consider switching to \"socket\" communication"
-                        );
-                    }
-                }
-                break;
-            }
             case "socket": {
-                var host = MainConfig.getInstance().node("bungee", "communication", "socket", "host").getString("localhost");
-                var port = MainConfig.getInstance().node("bungee", "communication", "socket", "port").getInt(9000);
+                var host = "localhost";
+                var port = 9000;
                 var serverName = BedWarsPlugin.getInstance().getServerName();
                 var messenger = new SocketMessenger(host, port, serverName, bytes -> {
                     try {

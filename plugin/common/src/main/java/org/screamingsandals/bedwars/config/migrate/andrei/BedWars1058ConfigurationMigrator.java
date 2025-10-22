@@ -38,7 +38,6 @@ public class BedWars1058ConfigurationMigrator implements FileMigrator {
             return;
         }
         ConfigurationNodeMigrator.yaml(file, MainConfig.getInstance().getConfigurationNode())
-                .remap("lobbyServer").toNewPath("bungee", "server")
                 .remap("re-spawn-invulnerability").withMapper((oldNode, newNode, keys) -> {
                     final var protectionTime = oldNode.node(keys).getInt();
                     try {

@@ -384,8 +384,8 @@ public class PlayerListener {
             );
         }
 
-        if (GameImpl.isBungeeEnabled()) {
-            if (!MainConfig.getInstance().node("bungee", "legacy-mode").getBoolean(true)) {
+        if (false) {
+            if (false) {
                 Debug.info(event.player().getName() + " joined the server and auto-game-connect is enabled in modern mode. Registering task...");
                 var countdown = new int[] {200};
                 Tasker.runDelayedAndRepeatedly(DefaultThreads.GLOBAL_THREAD, task -> {
@@ -435,21 +435,21 @@ public class PlayerListener {
                         task.cancel();
                     }
                 }, 1, TaskerTime.TICKS, 1, TaskerTime.TICKS);
-            } else if (MainConfig.getInstance().node("bungee", "auto-game-connect").getBoolean()) {
+            } else if (false) {
                 Debug.info(event.player().getName() + " joined the server and auto-game-connect is enabled in legacy mode. Registering task...");
                 Tasker.runDelayed(DefaultThreads.GLOBAL_THREAD, () -> {
                     try {
                         Debug.info("Selecting game for " + event.player().getName());
                         var gameManager = GameManagerImpl.getInstance();
                         Game game = null;
-                        if (MainConfig.getInstance().node("bungee", "random-game-selection", "enabled").getBoolean()) {
+                        if (false) {
                             if (gameManager.isDoGamePreselection()) {
                                 game = gameManager.getPreselectedGame();
                             }
                         }
                         if (game == null) {
                             game = (
-                                    MainConfig.getInstance().node("bungee", "random-game-selection", "enabled").getBoolean()
+                                    false
                                             ? gameManager.getGameWithHighestPlayers()
                                             : gameManager.getFirstWaitingGame()
                             ).or(gameManager::getFirstRunningGame).orElse(null);

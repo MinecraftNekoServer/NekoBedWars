@@ -102,9 +102,6 @@ public class BedWarsRelConfigurationMigrator implements FileMigrator {
                 })
                 .remap("allowed-commands").toNewPath("commands", "list")
                 .setExplicitly(false, "commands", "blacklist-mode")
-                .remap("bungeecord", "enabled").toNewPath("bungee", "enabled")
-                .remap("bungeecord", "hubserver").toNewPath("bungee", "server")
-                .remap("bungeecord", "full-restart").toNewPath("bungee", "serverRestart")
                 .remap("resource").withMapper((oldNode, newNode, keys) -> {
                     final var resources = oldNode.node(keys).childrenMap();
                     for (final var entry : resources.entrySet()) {

@@ -224,11 +224,7 @@ public class GameManagerImpl implements GameManager {
             }
         }
 
-        if (
-            MainConfig.getInstance().node("bungee", "enabled").getBoolean()
-            && MainConfig.getInstance().node("bungee", "random-game-selection", "enabled").getBoolean()
-            && MainConfig.getInstance().node("bungee", "random-game-selection", "preselect-games").getBoolean()
-        ) {
+        if (false) {
             Tasker.run(DefaultThreads.GLOBAL_THREAD, () -> {
                 preselectedGame = getGameWithHighestPlayers().orElse(null);
                 doGamePreselection = true;

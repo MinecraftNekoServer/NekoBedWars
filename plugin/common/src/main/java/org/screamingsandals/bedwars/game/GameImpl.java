@@ -219,9 +219,7 @@ public class GameImpl implements LocalGame {
         return game;
     }
 
-    public static boolean isBungeeEnabled() {
-        return MainConfig.getInstance().node("bungee", "enabled").getBoolean();
-    }
+    
 
     public void setWorld(World world) {
         if (this.world == null) {
@@ -695,8 +693,7 @@ public class GameImpl implements LocalGame {
         otherVisuals.forEach(visual -> visual.removeViewer(gamePlayer));
         gamePlayer.restoreDefaultScoreboard();
 
-        if (MainConfig.getInstance().node("mainlobby", "enabled").getBoolean()
-                && !MainConfig.getInstance().node("bungee", "enabled").getBoolean()) {
+        if (MainConfig.getInstance().node("mainlobby", "enabled").getBoolean()) {
             try {
                 Location mainLobbyLocation = MiscUtils.readLocationFromString(
                         Objects.requireNonNull(Worlds.getWorld(MainConfig.getInstance().node("mainlobby", "world").getString())),
@@ -1787,7 +1784,7 @@ public class GameImpl implements LocalGame {
 
     @Override
     public boolean getBungeeEnabled() {
-        return MainConfig.getInstance().node("bungee", "enabled").getBoolean();
+        return false;
     }
 
     @Override
@@ -2024,26 +2021,7 @@ public class GameImpl implements LocalGame {
         }, 40, TaskerTime.TICKS);
     }
 
-    protected void handleBungeePostGame() {
-        GameManagerImpl.getInstance().reselectGame();
-        preServerRestart = false;
-
-        if (!players.isEmpty()) {
-            kickAllPlayers();
-        }
-
-        Tasker.runDelayed(DefaultThreads.GLOBAL_THREAD, () -> {
-            if (MainConfig.getInstance().node("bungee", "serverRestart").getBoolean()) {
-                EventManager.fire(new ServerRestartEventImpl());
-
-                Server.getConsoleSender().tryToDispatchCommand("restart");
-            } else if (MainConfig.getInstance().node("bungee", "serverStop").getBoolean()) {
-                Server.shutdown();
-            } else {
-                preServerRestart = false;
-            }
-        }, 30, TaskerTime.TICKS);
-    }
+    
 
     public void spawnGameStores() {
         for (GameStoreImpl store : gameStore) {

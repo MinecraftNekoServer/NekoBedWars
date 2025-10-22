@@ -80,10 +80,10 @@ public class RemoteGameStateManager {
 
     @OnPostEnable
     public void onPostEnable(@NotNull MainConfig config) {
-        broadcastStateChangesToEveryone = config.node("bungee", "communication", "broadcast-state-changes-to-everyone").getBoolean();
-        preventStateChangeSubscribing = config.node("bungee", "communication", "prevent-state-change-subscribing").getBoolean();
-        preventIncomingStateChangeProcessing = config.node("bungee", "communication", "prevent-incoming-state-change-processing").getBoolean();
-        var preventSendingHelloPacket = config.node("bungee", "communication", "prevent-sending-hello-packet").getBoolean();
+        broadcastStateChangesToEveryone = false;
+        preventStateChangeSubscribing = false;
+        preventIncomingStateChangeProcessing = false;
+        var preventSendingHelloPacket = false;
 
         if (!preventStateChangeSubscribing) {
             Tasker.runAsyncDelayed(() -> {

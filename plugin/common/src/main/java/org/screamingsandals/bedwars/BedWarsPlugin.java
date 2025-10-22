@@ -476,10 +476,7 @@ public class BedWarsPlugin implements BedwarsAPI {
         return ServiceManager.get(ColorChangerImpl.class);
     }
 
-    @Override
-    public String getHubServerName() {
-        return MainConfig.getInstance().node("bungee", "server").getString();
-    }
+    
 
     @Override
     public PlayerStatisticManager getStatisticsManager() {

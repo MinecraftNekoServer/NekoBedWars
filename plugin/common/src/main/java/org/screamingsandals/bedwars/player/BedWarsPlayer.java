@@ -29,7 +29,7 @@ import org.screamingsandals.bedwars.commands.BedWarsPermission;
 import org.screamingsandals.bedwars.config.MainConfig;
 import org.screamingsandals.bedwars.game.GameImpl;
 import org.screamingsandals.bedwars.lib.debug.Debug;
-import org.screamingsandals.bedwars.utils.BungeeUtils;
+
 import org.screamingsandals.lib.attribute.AttributeType;
 import org.screamingsandals.lib.item.ItemStack;
 import org.screamingsandals.lib.player.ExtendablePlayer;
@@ -75,9 +75,6 @@ public class BedWarsPlayer extends ExtendablePlayer implements BWPlayer {
             this.setSpectator(false);
             this.clean();
             this.restoreInv();
-            if (GameImpl.isBungeeEnabled()) {
-                BungeeUtils.movePlayerToBungeeServer(this, BedWarsPlugin.isDisabling(), hubServerName);
-            }
         } else if (this.game == null && game != null) {
             this.storeInv();
             this.clean();
