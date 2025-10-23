@@ -281,15 +281,12 @@ public class GameManager {
         // 更新玩家统计数据
         updatePlayerStats();
         
-        // 在重启之前传送所有玩家到大厅
-        sendAllPlayersToLobby();
-        
-        // 启动服务器重启倒计时
-        startRestartCountdown();
-    }
+        // 启动服务器重启倒计时
+        startRestartCountdown();
+    }
 
-    /**
-     * 确定胜利队伍
+    /**
+     * 确定胜利队伍
      */
     private String determineWinner() {
         // 查找还有床且还有玩家的队伍
@@ -400,6 +397,9 @@ public class GameManager {
                 }
                 
                 if (timeLeft <= 0) {
+                    // 在重启之前传送所有玩家到大厅
+                    sendAllPlayersToLobby();
+                    
                     // 重启服务器
                     restartServer();
                     this.cancel();
