@@ -44,15 +44,16 @@
 
 本插件采用一服一图模式，不支持一服多图。
 
-地图配置文件位于 `plugins/NekoBedWars/config.yml`，配置项说明如下：
-- `name`: 地图名称
-- `world`: 地图所在世界名称
-- `beds`: 各队伍床的位置坐标
-- `spawns`: 各队伍出生点坐标
-- `shops`: 商店位置坐标
-- `upgrades`: 升级台位置坐标
-- `waitingarea`: 等待区域的两个边界点坐标
-- `maxplayers`: 每队最大玩家数（默认4人）
+地图配置文件位于 `plugins/NekoBedWars/config.yml`，配置项说明如下：
+- `name`: 地图名称
+- `world`: 地图所在世界名称
+- `beds`: 各队伍床的位置坐标
+- `spawns`: 各队伍出生点坐标
+- `shops`: 商店位置坐标
+- `upgrades`: 升级台位置坐标
+- `waitingarea`: 等待区域的两个边界点坐标
+- `waitingspawn`: 等待区出生点坐标
+- `maxplayers`: 每队最大玩家数（默认4人）
 - `teams`: 队伍配置（最多8个队伍）
 
 示例配置：
@@ -72,13 +73,15 @@ arena:
   upgrades:
     - "95,64,100"
     - "105,64,200"
-  waitingarea:
-    pos1: "50,64,50"
-    pos2: "150,80,150"
-  maxplayers: 4
-  teams:
-    - "red"
-    - "blue"
+  waitingarea:
+    pos1: "50,64,50"
+    pos2: "150,80,150"
+  waitingspawn: "100,65,150"
+  maxplayers: 4
+  teams:
+    - "red"
+    - "blue"
+```
 ```
 
 ## 变量使用方式
@@ -106,14 +109,15 @@ arena:
 - `/bw gui`: 打开图形界面快捷操作菜单
 - `/bw create <地图名称>`: 创建新地图并进入配置模式
 
-### 动态配置指令
-- `/bw setwaitingarea`: 设置等待区域（需要选择两个点）
-- `/bw setspawn <队伍颜色>`: 设置指定队伍的出生点
-- `/bw setbed <队伍颜色>`: 设置指定队伍的床位置
-- `/bw setshop`: 设置商店位置
-- `/bw setupgrade`: 设置升级台位置
-- `/bw setresource <资源类型>`: 设置指定类型的资源点位置
-- `/bw setncp`: 设置NCP位置
-- `/bw setbounds`: 设置游戏区域边界点（需要设置两个点）
-- `/bw setmaxplayers <人数>`: 设置每队最大玩家数（默认4人）
+### 动态配置指令
+- `/bw setwaitingarea`: 设置等待区域（执行两次设置两个点，使用玩家当前位置）
+- `/bw setwaitingspawn`: 设置等待区出生点（使用玩家当前位置）
+- `/bw setspawn <队伍颜色>`: 设置指定队伍的出生点
+- `/bw setbed <队伍颜色>`: 设置指定队伍的床位置
+- `/bw setshop`: 设置商店位置
+- `/bw setupgrade`: 设置升级台位置
+- `/bw setresource <资源类型>`: 设置指定类型的资源点位置
+- `/bw setncp`: 设置NCP位置
+- `/bw setbounds`: 设置游戏区域边界点（需要设置两个点）
+- `/bw setmaxplayers <人数>`: 设置每队最大玩家数（默认4人）
 - `/bw save`: 保存当前地图配置
