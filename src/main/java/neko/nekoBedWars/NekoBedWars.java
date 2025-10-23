@@ -11,6 +11,7 @@ import neko.nekoBedWars.listeners.PVPListener;
 import neko.nekoBedWars.listeners.WaitingAreaListener;
 import neko.nekoBedWars.scoreboard.GameScoreboard;
 import neko.nekoBedWars.scoreboard.WaitingScoreboard;
+import neko.nekoBedWars.utils.BungeeCordHelper;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.Bukkit;
@@ -32,7 +33,8 @@ public final class NekoBedWars extends JavaPlugin {
     private boolean configurationMode = true; // 配置模式标记，默认为true
     private GameScoreboard gameScoreboard; // 游戏计分板
     private WaitingScoreboard waitingScoreboard; // 等待区域计分板
-    private GameManager gameManager; // 游戏管理器
+    private GameManager gameManager; // 游戏管理器
+    private BungeeCordHelper bungeeCordHelper; // BungeeCord助手
 
     @Override
     public void onEnable() {
@@ -57,7 +59,10 @@ public final class NekoBedWars extends JavaPlugin {
         
         // 初始化游戏计分板
         gameScoreboard = new GameScoreboard(this);
-        waitingScoreboard = new WaitingScoreboard(this);
+        waitingScoreboard = new WaitingScoreboard(this);
+        
+        // 初始化BungeeCord助手
+        bungeeCordHelper = new BungeeCordHelper(this);
         
         // 加载地图配置
         ArenaManager.getInstance().loadArenas();
@@ -167,6 +172,10 @@ public final class NekoBedWars extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new HungerListener(this), this);
         Bukkit.getPluginManager().registerEvents(new PVPListener(this), this);
         Bukkit.getPluginManager().registerEvents(new LobbyReturnListener(this), this);
+        
+        // 注册BungeeCord插件通道
+        Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+        
         logger.info("事件监听器注册完成");
     }
     
@@ -218,6 +227,10 @@ public final class NekoBedWars extends JavaPlugin {
     
     public GameManager getGameManager() {
         return gameManager;
+    }
+    
+    public BungeeCordHelper getBungeeCordHelper() {
+        return bungeeCordHelper;
     }
     
     /**
