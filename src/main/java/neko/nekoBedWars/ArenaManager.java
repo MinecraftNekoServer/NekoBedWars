@@ -136,4 +136,8 @@ public class ArenaManager {
     public Map<String, GameArena> getArenas() {
         return arenas;
     }
+    
+    public void setActiveArena(GameArena arena) {
+        this.activeArena = arena;
+    }
 }

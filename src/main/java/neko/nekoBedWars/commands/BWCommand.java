@@ -24,6 +24,7 @@ public class BWCommand implements CommandExecutor {
     private Set<Player> resourceSelectionMode = new HashSet<>();
     private Set<Player> ncpSelectionMode = new HashSet<>();
     private Set<Player> boundsSelectionMode = new HashSet<>();
+    private Set<Player> createModePlayers = new HashSet<>(); // 配置模式玩家
     
     // 用于存储选择的位置
     private Location pos1;
@@ -77,6 +78,8 @@ public class BWCommand implements CommandExecutor {
                 return handleStatsCommand(player);
             case "gui":
                 return handleGuiCommand(player);
+            case "create":
+                return handleCreateCommand(player, args);
             case "setwaitingarea":
                 return handleSetWaitingAreaCommand(player);
             case "setspawn":
@@ -191,6 +194,41 @@ public class BWCommand implements CommandExecutor {
         return true;
     }
 
+    private boolean handleCreateCommand(Player player, String[] args) {
+        if (args.length < 2) {
+            player.sendMessage("§c用法: /bw create <地图名称>");
+            return true;
+        }
+        
+        String arenaName = args[1];
+        
+        // 检查是否已存在同名地图
+        if (ArenaManager.getInstance().getArenas().containsKey(arenaName)) {
+            player.sendMessage("§c地图 " + arenaName + " 已存在");
+            return true;
+        }
+        
+        // 创建新的游戏地图
+        GameArena arena = new GameArena(arenaName, player.getWorld());
+        ArenaManager.getInstance().getArenas().put(arenaName, arena);
+        ArenaManager.getInstance().setActiveArena(arena);
+        
+        // 启动配置模式
+        createModePlayers.add(player);
+        
+        // 给玩家发放配置工具
+        giveConfigurationTools(player);
+        
+        // 将玩家传送至地图中心
+        teleportToCenter(player, arena);
+        
+        player.sendMessage("§a成功创建地图 " + arenaName + " 并进入配置模式");
+        player.sendMessage("§e提示: 使用配置工具点击方块来设置地图元素");
+        player.sendMessage("§e使用 /bw save 保存配置");
+        
+        return true;
+    }
+
     private boolean handleSetWaitingAreaCommand(Player player) {
         waitingAreaSelectionMode.add(player);
         player.sendMessage("§a请左键点击选择等待区域的第一个点");
@@ -301,8 +339,73 @@ public class BWCommand implements CommandExecutor {
     }
 
     private boolean handleSaveCommand(Player player) {
+        // 退出配置模式
+        createModePlayers.remove(player);
+        
         // TODO: 实现保存配置逻辑
         player.sendMessage("§a地图配置已保存");
         return true;
+    }
+    
+    private void giveConfigurationTools(Player player) {
+        // 清空玩家物品栏
+        player.getInventory().clear();
+        
+        // 创建带有自定义名称和说明的配置工具
+        org.bukkit.inventory.ItemStack bedItem = new org.bukkit.inventory.ItemStack(org.bukkit.Material.BED);
+        org.bukkit.inventory.ItemStack redstoneTorchItem = new org.bukkit.inventory.ItemStack(org.bukkit.Material.REDSTONE_TORCH_ON);
+        org.bukkit.inventory.ItemStack chestItem = new org.bukkit.inventory.ItemStack(org.bukkit.Material.CHEST);
+        org.bukkit.inventory.ItemStack enchantTableItem = new org.bukkit.inventory.ItemStack(org.bukkit.Material.ENCHANTMENT_TABLE);
+        org.bukkit.inventory.ItemStack diamondItem = new org.bukkit.inventory.ItemStack(org.bukkit.Material.DIAMOND);
+        org.bukkit.inventory.ItemStack emeraldItem = new org.bukkit.inventory.ItemStack(org.bukkit.Material.EMERALD);
+        org.bukkit.inventory.ItemStack goldIngotItem = new org.bukkit.inventory.ItemStack(org.bukkit.Material.GOLD_INGOT);
+        org.bukkit.inventory.ItemStack ironIngotItem = new org.bukkit.inventory.ItemStack(org.bukkit.Material.IRON_INGOT);
+        org.bukkit.inventory.ItemStack barrierItem = new org.bukkit.inventory.ItemStack(org.bukkit.Material.BARRIER);
+        
+        // 设置物品名称和说明
+        setItemDisplayName(bedItem, "§c床位置设置工具", "§7点击方块设置床位置");
+        setItemDisplayName(redstoneTorchItem, "§a出生点设置工具", "§7点击方块设置出生点");
+        setItemDisplayName(chestItem, "§e商店位置设置工具", "§7点击方块设置商店位置");
+        setItemDisplayName(enchantTableItem, "§d升级台设置工具", "§7点击方块设置升级台位置");
+        setItemDisplayName(diamondItem, "§b钻石资源点设置工具", "§7点击方块设置钻石资源点");
+        setItemDisplayName(emeraldItem, "§a绿宝石资源点设置工具", "§7点击方块设置绿宝石资源点");
+        setItemDisplayName(goldIngotItem, "§6金资源点设置工具", "§7点击方块设置金资源点");
+        setItemDisplayName(ironIngotItem, "§f铁资源点设置工具", "§7点击方块设置铁资源点");
+        setItemDisplayName(barrierItem, "§8边界设置工具", "§7点击两个点设置边界");
+        
+        // 给玩家发放配置工具
+        player.getInventory().setItem(0, bedItem);
+        player.getInventory().setItem(1, redstoneTorchItem);
+        player.getInventory().setItem(2, chestItem);
+        player.getInventory().setItem(3, enchantTableItem);
+        player.getInventory().setItem(4, diamondItem);
+        player.getInventory().setItem(5, emeraldItem);
+        player.getInventory().setItem(6, goldIngotItem);
+        player.getInventory().setItem(7, ironIngotItem);
+        player.getInventory().setItem(8, barrierItem);
+        
+        player.sendMessage("§a配置工具已发放，请使用物品栏中的工具进行配置");
+    }
+    
+    private void setItemDisplayName(org.bukkit.inventory.ItemStack item, String displayName, String lore) {
+        org.bukkit.inventory.meta.ItemMeta meta = item.getItemMeta();
+        if (meta != null) {
+            meta.setDisplayName(displayName);
+            java.util.List<String> loreList = new java.util.ArrayList<>();
+            loreList.add(lore);
+            meta.setLore(loreList);
+            item.setItemMeta(meta);
+        }
+    }
+    
+    private void teleportToCenter(Player player, GameArena arena) {
+        // 计算地图中心位置
+        Location center = player.getWorld().getSpawnLocation(); // 简化处理，使用世界出生点
+        player.teleport(center);
+        
+        // 设置玩家视角居中
+        player.setCompassTarget(center);
+        
+        player.sendMessage("§a已传送至地图中心");
     }
 }

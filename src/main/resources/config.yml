@@ -10,7 +10,7 @@ database:
     port: 3306
     database: "nekobedwars"
     username: "root"
-    password: "password"
+    password: "wcjs123"
     # path: "db.sql" # 若使用 SQLite 请启用此项喵~
 
 # 🏰 默认地图配置
@@ -24,7 +24,7 @@ arena:
   waitingarea:
     pos1: ""
     pos2: ""
-  maxplayers: 8   # 最多8位萌萌勇者！
+  maxplayers: 16   # 最多16位萌萌勇者！
   teams: []       # 队伍配置（红蓝黄绿喵~）
 
 # ✨ 粒子效果配置 ✨
