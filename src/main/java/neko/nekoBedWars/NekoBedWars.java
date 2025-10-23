@@ -21,6 +21,7 @@ public final class NekoBedWars extends JavaPlugin {
     private Connection databaseConnection;
     private Logger logger;
     private PlayerData playerData;
+    private GUIListener guiListener;
 
     @Override
     public void onEnable() {
@@ -108,7 +109,8 @@ public final class NekoBedWars extends JavaPlugin {
     private void registerEvents() {
         // 注册事件监听器
         Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(this), this);
-        Bukkit.getPluginManager().registerEvents(new GUIListener(this), this);
+        guiListener = new GUIListener(this);
+        Bukkit.getPluginManager().registerEvents(guiListener, this);
         logger.info("事件监听器注册完成");
     }
     
@@ -136,5 +138,9 @@ public final class NekoBedWars extends JavaPlugin {
     
     public PlayerData getPlayerData() {
         return playerData;
+    }
+    
+    public GUIListener getGuiListener() {
+        return guiListener;
     }
 }

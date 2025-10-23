@@ -4,6 +4,8 @@ import neko.nekoBedWars.NekoBedWars;
 import neko.nekoBedWars.GameArena;
 import neko.nekoBedWars.ArenaManager;
 import neko.nekoBedWars.commands.BWCommand;
+import neko.nekoBedWars.gui.TeamSelectionGUI;
+import neko.nekoBedWars.listeners.GUIListener;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -294,16 +296,18 @@ public class PlayerInteractListener implements Listener {
     
     // 处理床位置设置（带GUI选择）
     private void handleBedPlacementWithGUI(Player player, org.bukkit.Location location) {
-        // 直接使用完整类名来避免导入问题
-        neko.nekoBedWars.gui.TeamSelectionGUI teamGUI = new neko.nekoBedWars.gui.TeamSelectionGUI(player, neko.nekoBedWars.gui.TeamSelectionGUI.LocationType.BED, location);
+        TeamSelectionGUI teamGUI = new TeamSelectionGUI(player, TeamSelectionGUI.LocationType.BED, location);
+        // 将GUI实例注册到GUIListener中
+        plugin.getGuiListener().registerTeamSelectionGUI(player, teamGUI);
         teamGUI.openGUI();
         player.sendMessage(org.bukkit.ChatColor.GREEN + "请选择床位置对应的队伍颜色");
     }
     
     // 处理出生点设置（带GUI选择）
     private void handleSpawnPlacementWithGUI(Player player, org.bukkit.Location location) {
-        // 直接使用完整类名来避免导入问题
-        neko.nekoBedWars.gui.TeamSelectionGUI teamGUI = new neko.nekoBedWars.gui.TeamSelectionGUI(player, neko.nekoBedWars.gui.TeamSelectionGUI.LocationType.SPAWN, location);
+        TeamSelectionGUI teamGUI = new TeamSelectionGUI(player, TeamSelectionGUI.LocationType.SPAWN, location);
+        // 将GUI实例注册到GUIListener中
+        plugin.getGuiListener().registerTeamSelectionGUI(player, teamGUI);
         teamGUI.openGUI();
         player.sendMessage(org.bukkit.ChatColor.GREEN + "请选择出生点对应的队伍颜色");
     }
