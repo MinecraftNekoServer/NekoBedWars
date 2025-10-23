@@ -16,6 +16,7 @@ public class GameArena {
     private Map<String, Location> spawns;
     private List<Location> shops;
     private List<Location> upgrades;
+    private Map<String, List<Location>> resourcePoints; // 资源点，按类型分类
     private Location waitingAreaPos1;
     private Location waitingAreaPos2;
     private Location waitingSpawnPoint; // 等待区出生点
@@ -33,6 +34,7 @@ public class GameArena {
         this.spawns = new HashMap<>();
         this.shops = new ArrayList<>();
         this.upgrades = new ArrayList<>();
+        this.resourcePoints = new HashMap<>(); // 初始化资源点
         this.teams = new ArrayList<>();
         this.state = GameState.WAITING;
         this.playerTeams = new HashMap<>();
@@ -73,6 +75,14 @@ public class GameArena {
 
     public List<Location> getUpgrades() {
         return upgrades;
+    }
+
+    public Map<String, List<Location>> getResourcePoints() {
+        return resourcePoints;
+    }
+
+    public List<Location> getResourcePoints(String resourceType) {
+        return resourcePoints.computeIfAbsent(resourceType, k -> new ArrayList<>());
     }
 
     public Location getWaitingAreaPos1() {

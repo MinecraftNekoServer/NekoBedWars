@@ -51,6 +51,7 @@
 - `spawns`: 各队伍出生点坐标
 - `shops`: 商店位置坐标
 - `upgrades`: 升级台位置坐标
+- `resources`: 各类资源点坐标（按资源类型分类）
 - `waitingarea`: 等待区域的两个边界点坐标
 - `waitingspawn`: 等待区出生点坐标
 - `maxplayers`: 每队最大玩家数（默认4人）
@@ -73,6 +74,17 @@ arena:
   upgrades:
     - "95,64,100"
     - "105,64,200"
+  resources:
+    diamond:
+      - "100,64,150"
+    emerald:
+      - "100,64,160"
+    gold:
+      - "90,64,150"
+      - "110,64,150"
+    iron:
+      - "80,64,150"
+      - "120,64,150"
   waitingarea:
     pos1: "50,64,50"
     pos2: "150,80,150"

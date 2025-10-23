@@ -103,6 +103,19 @@ public class ArenaManager {
                     }
                 }
                 
+                // 加载资源点
+                if (config.contains("arena.resources")) {
+                    for (String resourceType : config.getConfigurationSection("arena.resources").getKeys(false)) {
+                        List<String> locationStrings = config.getStringList("arena.resources." + resourceType);
+                        for (String locationStr : locationStrings) {
+                            Location location = parseLocation(locationStr, world);
+                            if (location != null) {
+                                arena.getResourcePoints(resourceType).add(location);
+                            }
+                        }
+                    }
+                }
+                
                 // 加载最大玩家数
                 int maxPlayers = config.getInt("arena.maxplayers", 4);
                 arena.setMaxPlayersPerTeam(maxPlayers);

@@ -9,7 +9,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.Location;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class BWCommand implements CommandExecutor {
@@ -482,6 +485,18 @@ public class BWCommand implements CommandExecutor {
             Location spawnPoint = arena.getWaitingSpawnPoint();
             String spawnPointStr = spawnPoint.getX() + "," + spawnPoint.getY() + "," + spawnPoint.getZ();
             config.set("arena.waitingspawn", spawnPointStr);
+        }
+        
+        // 保存资源点
+        for (Map.Entry<String, List<Location>> entry : arena.getResourcePoints().entrySet()) {
+            String resourceType = entry.getKey();
+            List<Location> locations = entry.getValue();
+            List<String> locationStrings = new ArrayList<>();
+            for (Location location : locations) {
+                String locationStr = location.getX() + "," + location.getY() + "," + location.getZ();
+                locationStrings.add(locationStr);
+            }
+            config.set("arena.resources." + resourceType, locationStrings);
         }
         
         // 保存最大玩家数

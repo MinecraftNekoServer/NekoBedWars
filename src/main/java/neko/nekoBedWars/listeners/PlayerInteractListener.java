@@ -167,15 +167,19 @@ public class PlayerInteractListener implements Listener {
             player.sendMessage(ChatColor.GREEN + "升级台位置已设置");
         } else if (isDiamondTool) {
             // 设置钻石资源点
+            arena.getResourcePoints("diamond").add(location);
             player.sendMessage(ChatColor.GREEN + "钻石资源点位置已设置");
         } else if (isEmeraldTool) {
             // 设置绿宝石资源点
+            arena.getResourcePoints("emerald").add(location);
             player.sendMessage(ChatColor.GREEN + "绿宝石资源点位置已设置");
         } else if (isGoldTool) {
             // 设置金资源点
+            arena.getResourcePoints("gold").add(location);
             player.sendMessage(ChatColor.GREEN + "金资源点位置已设置");
         } else if (isIronTool) {
             // 设置铁资源点
+            arena.getResourcePoints("iron").add(location);
             player.sendMessage(ChatColor.GREEN + "铁资源点位置已设置");
         } else if (isBarrierTool) {
             // 设置边界点
