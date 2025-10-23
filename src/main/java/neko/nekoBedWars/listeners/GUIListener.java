@@ -156,6 +156,9 @@ public class GUIListener implements Listener {
     }
     
     public void registerTeamSelectionGUI(Player player, TeamSelectionGUI gui) {
+
         teamSelectionGUIs.put(player, gui);
+
     }
+
 }
