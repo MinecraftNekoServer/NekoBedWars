@@ -133,7 +133,15 @@ public class BWCommand implements CommandExecutor {
         
         if (arena.addPlayer(player)) {
             player.sendMessage("§a成功加入地图 " + arenaName);
-            // TODO: 传送玩家到等待区域
+            
+            // 显示计分板
+            plugin.getGameScoreboard().addPlayer(player);
+            plugin.getGameScoreboard().updateScoreboard(arena);
+            
+            // 传送玩家到等待区域出生点
+            if (arena.getWaitingSpawnPoint() != null) {
+                player.teleport(arena.getWaitingSpawnPoint());
+            }
         } else {
             player.sendMessage("§c无法加入地图 " + arenaName + "，可能已满人或游戏已开始");
         }

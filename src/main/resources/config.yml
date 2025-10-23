@@ -103,5 +103,8 @@ scoreboard:
     - ''
     - '&d✧ &b为信仰而战喵~! &d✧'
     - '&fPowered by &dNekoTeam☆'
+game:
+  countdown: 30
+  restart-time: 10
 arena:
   configured: false

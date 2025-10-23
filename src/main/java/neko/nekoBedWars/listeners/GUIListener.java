@@ -127,7 +127,15 @@ public class GUIListener implements Listener {
         
         if (arena.addPlayer(player)) {
             player.sendMessage(ChatColor.GREEN + "成功加入游戏");
-            // TODO: 传送玩家到等待区域
+            
+            // 显示计分板
+            plugin.getGameScoreboard().addPlayer(player);
+            plugin.getGameScoreboard().updateScoreboard(arena);
+            
+            // 传送玩家到等待区域出生点
+            if (arena.getWaitingSpawnPoint() != null) {
+                player.teleport(arena.getWaitingSpawnPoint());
+            }
         } else {
             player.sendMessage(ChatColor.RED + "无法加入游戏，可能已满人或游戏已开始");
         }

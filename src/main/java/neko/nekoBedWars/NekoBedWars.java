@@ -4,6 +4,7 @@ import neko.nekoBedWars.commands.BWCommand;
 import neko.nekoBedWars.database.PlayerData;
 import neko.nekoBedWars.listeners.GUIListener;
 import neko.nekoBedWars.listeners.PlayerInteractListener;
+import neko.nekoBedWars.scoreboard.GameScoreboard;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.Bukkit;
@@ -23,6 +24,8 @@ public final class NekoBedWars extends JavaPlugin {
     private PlayerData playerData;
     private GUIListener guiListener;
     private boolean configurationMode = true; // 配置模式标记，默认为true
+    private GameScoreboard gameScoreboard; // 游戏计分板
+    private GameManager gameManager; // 游戏管理器
 
     @Override
     public void onEnable() {
@@ -45,11 +48,19 @@ public final class NekoBedWars extends JavaPlugin {
             playerData = new PlayerData(databaseConnection);
         }
         
+        // 初始化游戏计分板
+        gameScoreboard = new GameScoreboard(this);
+        
         // 加载地图配置
         ArenaManager.getInstance().loadArenas();
         
-        // 输出当前地图信息
+        // 初始化游戏管理器
         GameArena activeArena = ArenaManager.getInstance().getActiveArena();
+        if (activeArena != null) {
+            gameManager = new GameManager(this, activeArena);
+        }
+        
+        // 输出当前地图信息
         if (activeArena != null) {
             logger.info("当前激活地图: " + activeArena.getName());
             logger.info("插件模式: " + (configurationMode ? "配置模式" : "游戏模式"));
@@ -64,6 +75,9 @@ public final class NekoBedWars extends JavaPlugin {
         
         // 启动天气锁定任务
         startWeatherLockTask();
+        
+        // 启动游戏检查任务
+        startGameCheckTask();
         
         logger.info("NekoBedWars 插件已启用!");
     }
@@ -172,5 +186,26 @@ public final class NekoBedWars extends JavaPlugin {
     
     public void setConfigurationMode(boolean configurationMode) {
         this.configurationMode = configurationMode;
+    }
+    
+    public GameScoreboard getGameScoreboard() {
+        return gameScoreboard;
+    }
+    
+    public GameManager getGameManager() {
+        return gameManager;
+    }
+    
+    /**
+     * 启动游戏检查任务
+     */
+    private void startGameCheckTask() {
+        // 每5秒检查一次游戏状态
+        getServer().getScheduler().runTaskTimer(this, () -> {
+            if (gameManager != null && !configurationMode) {
+                gameManager.checkGameStart();
+                gameManager.checkGameEnd();
+            }
+        }, 100L, 100L); // 延迟5秒开始，每5秒执行一次
     }
 }
