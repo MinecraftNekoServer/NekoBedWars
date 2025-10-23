@@ -2,7 +2,6 @@ package neko.nekoBedWars.effects;
 
 import neko.nekoBedWars.NekoBedWars;
 import org.bukkit.Location;
-import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.configuration.ConfigurationSection;
 import java.util.List;
@@ -18,32 +17,29 @@ public class ParticleEffect {
         ConfigurationSection config = plugin.getConfig().getConfigurationSection("effects.bed_destroy");
         if (config != null) {
             String type = config.getString("type", "REDSTONE");
-            Particle particle = Particle.valueOf(type);
             
-            // 播放粒子效果
-            location.getWorld().spawnParticle(particle, location, 50, 0.5, 0.5, 0.5, 0.1);
+            // 播放粒子效果 (1.12.2版本使用不同的API)
+            location.getWorld().playEffect(location, org.bukkit.Effect.valueOf(type), 0);
         }
     }
 
     public void playPlayerDeathEffect(Location location) {
         ConfigurationSection config = plugin.getConfig().getConfigurationSection("effects.player_death");
         if (config != null) {
-            String type = config.getString("type", "EXPLOSION_NORMAL");
-            Particle particle = Particle.valueOf(type);
+            String type = config.getString("type", "EXPLOSION");
             
-            // 播放粒子效果
-            location.getWorld().spawnParticle(particle, location, 10, 0.5, 0.5, 0.5, 0.1);
+            // 播放粒子效果 (1.12.2版本使用不同的API)
+            location.getWorld().playEffect(location, org.bukkit.Effect.valueOf(type), 0);
         }
     }
 
     public void playResourceGenerateEffect(Location location) {
         ConfigurationSection config = plugin.getConfig().getConfigurationSection("effects.resource_generate");
         if (config != null) {
-            String type = config.getString("type", "VILLAGER_HAPPY");
-            Particle particle = Particle.valueOf(type);
+            String type = config.getString("type", "HAPPY_VILLAGER");
             
-            // 播放粒子效果
-            location.getWorld().spawnParticle(particle, location, 10, 0.5, 0.5, 0.5, 0.1);
+            // 播放粒子效果 (1.12.2版本使用不同的API)
+            location.getWorld().playEffect(location, org.bukkit.Effect.valueOf(type), 0);
         }
     }
 
@@ -58,10 +54,9 @@ public class ParticleEffect {
         ConfigurationSection config = plugin.getConfig().getConfigurationSection("effects." + effectType);
         if (config != null) {
             String type = config.getString("type", "REDSTONE");
-            Particle particle = Particle.valueOf(type);
             
-            // 播放粒子效果给玩家
-            player.spawnParticle(particle, location, 10, 0.5, 0.5, 0.5, 0.1);
+            // 播放粒子效果给玩家 (1.12.2版本使用不同的API)
+            player.playEffect(location, org.bukkit.Effect.valueOf(type), 0);
         }
     }
 }

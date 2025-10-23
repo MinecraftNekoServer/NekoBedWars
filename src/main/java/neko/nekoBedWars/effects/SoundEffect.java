@@ -18,7 +18,13 @@ public class SoundEffect {
         ConfigurationSection config = plugin.getConfig().getConfigurationSection("sounds.bed_destroy");
         if (config != null) {
             String type = config.getString("type", "ENTITY_ENDERDRAGON_GROWL");
-            Sound sound = Sound.valueOf(type);
+            // 检查音效是否存在，如果不存在则使用默认音效
+            Sound sound;
+            try {
+                sound = Sound.valueOf(type);
+            } catch (IllegalArgumentException e) {
+                sound = Sound.ENTITY_ENDERDRAGON_GROWL; // 1.12.2中的对应音效
+            }
             float volume = (float) config.getDouble("volume", 1.0);
             float pitch = (float) config.getDouble("pitch", 1.0);
             
@@ -31,7 +37,13 @@ public class SoundEffect {
         ConfigurationSection config = plugin.getConfig().getConfigurationSection("sounds.player_death");
         if (config != null) {
             String type = config.getString("type", "ENTITY_PLAYER_DEATH");
-            Sound sound = Sound.valueOf(type);
+            // 检查音效是否存在，如果不存在则使用默认音效
+            Sound sound;
+            try {
+                sound = Sound.valueOf(type);
+            } catch (IllegalArgumentException e) {
+                sound = Sound.ENTITY_PLAYER_DEATH; // 1.12.2中的对应音效
+            }
             float volume = (float) config.getDouble("volume", 1.0);
             float pitch = (float) config.getDouble("pitch", 1.0);
             
@@ -44,7 +56,13 @@ public class SoundEffect {
         ConfigurationSection config = plugin.getConfig().getConfigurationSection("sounds.game_start");
         if (config != null) {
             String type = config.getString("type", "ENTITY_WITHER_SPAWN");
-            Sound sound = Sound.valueOf(type);
+            // 检查音效是否存在，如果不存在则使用默认音效
+            Sound sound;
+            try {
+                sound = Sound.valueOf(type);
+            } catch (IllegalArgumentException e) {
+                sound = Sound.ENTITY_WITHER_SPAWN; // 1.12.2中的对应音效
+            }
             float volume = (float) config.getDouble("volume", 1.0);
             float pitch = (float) config.getDouble("pitch", 1.0);
             
@@ -57,7 +75,13 @@ public class SoundEffect {
         ConfigurationSection config = plugin.getConfig().getConfigurationSection("sounds.game_end");
         if (config != null) {
             String type = config.getString("type", "ENTITY_ENDERDRAGON_DEATH");
-            Sound sound = Sound.valueOf(type);
+            // 检查音效是否存在，如果不存在则使用默认音效
+            Sound sound;
+            try {
+                sound = Sound.valueOf(type);
+            } catch (IllegalArgumentException e) {
+                sound = Sound.ENTITY_ENDERDRAGON_DEATH; // 1.12.2中的对应音效
+            }
             float volume = (float) config.getDouble("volume", 1.0);
             float pitch = (float) config.getDouble("pitch", 1.0);
             
@@ -77,7 +101,13 @@ public class SoundEffect {
         ConfigurationSection config = plugin.getConfig().getConfigurationSection("sounds." + soundType);
         if (config != null) {
             String type = config.getString("type", "ENTITY_PLAYER_LEVELUP");
-            Sound sound = Sound.valueOf(type);
+            // 检查音效是否存在，如果不存在则使用默认音效
+            Sound sound;
+            try {
+                sound = Sound.valueOf(type);
+            } catch (IllegalArgumentException e) {
+                sound = Sound.ENTITY_PLAYER_LEVELUP; // 1.12.2中的对应音效
+            }
             float volume = (float) config.getDouble("volume", 1.0);
             float pitch = (float) config.getDouble("pitch", 1.0);
             

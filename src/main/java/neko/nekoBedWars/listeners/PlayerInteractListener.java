@@ -1,6 +1,5 @@
 package neko.nekoBedWars.listeners;
 
-import neko.nekoBedWars.commands.BWCommand;
 import neko.nekoBedWars.NekoBedWars;
 import neko.nekoBedWars.GameArena;
 import neko.nekoBedWars.ArenaManager;
@@ -10,7 +9,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.Material;
 import org.bukkit.ChatColor;
 import java.util.Set;
 import java.util.HashSet;

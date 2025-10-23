@@ -1,6 +1,12 @@
 name: NekoBedWars
 version: '1.0-SNAPSHOT'
 main: neko.nekoBedWars.NekoBedWars
-api-version: '1.18'
+api-version: '1.12'
 authors: [ 不穿胖次の小奶猫 ]
 website: https://cnmsb.xin/
+
+commands:
+  bw:
+    description: 起床战争主指令
+    usage: /<command> [参数]
+    aliases: [bedwars]

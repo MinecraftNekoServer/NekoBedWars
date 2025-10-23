@@ -1,8 +1,13 @@
 package neko.nekoBedWars;
 
+import neko.nekoBedWars.commands.BWCommand;
+import neko.nekoBedWars.database.PlayerData;
+import neko.nekoBedWars.listeners.GUIListener;
+import neko.nekoBedWars.listeners.PlayerInteractListener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.Bukkit;
+import org.bukkit.command.PluginCommand;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -13,6 +18,7 @@ public final class NekoBedWars extends JavaPlugin {
     private FileConfiguration config;
     private Connection databaseConnection;
     private Logger logger;
+    private PlayerData playerData;
 
     @Override
     public void onEnable() {
@@ -27,6 +33,11 @@ public final class NekoBedWars extends JavaPlugin {
         // 初始化数据库连接
         initializeDatabase();
         
+        // 初始化玩家数据管理器
+        if (databaseConnection != null) {
+            playerData = new PlayerData(databaseConnection);
+        }
+        
         // 注册指令和事件监听器
         registerCommands();
         registerEvents();
@@ -37,6 +48,11 @@ public final class NekoBedWars extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        // 保存所有玩家数据
+        if (playerData != null) {
+            playerData.saveAll();
+        }
+        
         // 关闭数据库连接
         if (databaseConnection != null) {
             try {
@@ -76,12 +92,18 @@ public final class NekoBedWars extends JavaPlugin {
     }
     
     private void registerCommands() {
-        // TODO: 注册指令
+        // 注册BW指令
+        PluginCommand bwCommand = getCommand("bw");
+        if (bwCommand != null) {
+            bwCommand.setExecutor(new BWCommand(this));
+        }
         logger.info("指令注册完成");
     }
     
     private void registerEvents() {
-        // TODO: 注册事件监听器
+        // 注册事件监听器
+        Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new GUIListener(this), this);
         logger.info("事件监听器注册完成");
     }
     
@@ -91,5 +113,9 @@ public final class NekoBedWars extends JavaPlugin {
     
     public Connection getDatabaseConnection() {
         return databaseConnection;
+    }
+    
+    public PlayerData getPlayerData() {
+        return playerData;
     }
 }

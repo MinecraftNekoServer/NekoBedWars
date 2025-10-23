@@ -3,12 +3,12 @@ package neko.nekoBedWars.commands;
 import neko.nekoBedWars.NekoBedWars;
 import neko.nekoBedWars.GameArena;
 import neko.nekoBedWars.ArenaManager;
+import neko.nekoBedWars.gui.GameGUI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.Location;
-import org.bukkit.util.Vector;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -185,8 +185,9 @@ public class BWCommand implements CommandExecutor {
     }
 
     private boolean handleGuiCommand(Player player) {
-        // TODO: 实现GUI界面
-        player.sendMessage("§a打开图形界面快捷操作菜单");
+        // 打开GUI界面
+        GameGUI gui = new GameGUI(player);
+        gui.openGUI();
         return true;
     }
 

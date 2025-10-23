@@ -1,0 +1,36 @@
+[--rev, 1.12.2, --compile, craftbukkit]
+Loading BuildTools version: git-BuildTools-a5eeb3c-195 (#195)
+Java Version: Java 21
+Current Path: D:\Projects\Idea\NekoBedWars
+*** Could not find PortableGit installation, downloading. ***
+Starting download of https://github.com/git-for-windows/git/releases/download/v2.45.2.windows.1/PortableGit-2.45.2-64-bit.7z.exe
+Exception in thread "main" java.net.SocketException: 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+	at java.base/sun.nio.ch.SocketDispatcher.read0(Native Method)
+	at java.base/sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:46)
+	at java.base/sun.nio.ch.NioSocketImpl.tryRead(NioSocketImpl.java:256)
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:307)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:346)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:796)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:1099)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:489)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.readHeader(SSLSocketInputRecord.java:483)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.bytesInCompletePacket(SSLSocketInputRecord.java:70)
+	at java.base/sun.security.ssl.SSLSocketImpl.readApplicationRecord(SSLSocketImpl.java:1461)
+	at java.base/sun.security.ssl.SSLSocketImpl$AppInputStream.read(SSLSocketImpl.java:1066)
+	at java.base/java.io.BufferedInputStream.fill(BufferedInputStream.java:291)
+	at java.base/java.io.BufferedInputStream.read1(BufferedInputStream.java:347)
+	at java.base/java.io.BufferedInputStream.implRead(BufferedInputStream.java:420)
+	at java.base/java.io.BufferedInputStream.read(BufferedInputStream.java:399)
+	at java.base/sun.net.www.http.HttpClient.parseHTTPHeader(HttpClient.java:827)
+	at java.base/sun.net.www.http.HttpClient.parseHTTP(HttpClient.java:759)
+	at java.base/sun.net.www.http.HttpClient.parseHTTP(HttpClient.java:786)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream0(HttpURLConnection.java:1705)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:1614)
+	at java.base/sun.net.www.protocol.https.HttpsURLConnectionImpl.getInputStream(HttpsURLConnectionImpl.java:223)
+	at java.base/java.net.URL.openStream(URL.java:1325)
+	at com.google.common.io.Resources$UrlByteSource.openStream(Resources.java:70)
+	at com.google.common.io.ByteSource.read(ByteSource.java:296)
+	at com.google.common.io.Resources.toByteArray(Resources.java:96)
+	at org.spigotmc.builder.Builder.download(Builder.java:1152)
+	at org.spigotmc.builder.Builder.startBuilder(Builder.java:207)
+	at org.spigotmc.builder.Bootstrap.main(Bootstrap.java:60)

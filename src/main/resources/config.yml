@@ -1,79 +1,72 @@
-# NekoBedWars 配置文件
+# 🌙 NekoBedWars 配置文件 ✧ 二次元幻想版 ✧
+# 喵～欢迎来到梦幻次元的起床战争世界！
+# 可爱是力量，信仰是胜利 ฅ(≚ᄌ≚)~♡
 
-# 数据库配置
+# 🐾 数据库配置
 database:
-  # 数据库类型 (MySQL, SQLite, etc.)
-  type: "MySQL"
-  # MySQL 配置
+  type: "MySQL"  # 支持 MySQL / SQLite
   mysql:
     host: "localhost"
     port: 3306
     database: "nekobedwars"
     username: "root"
     password: "password"
-    path: "db.sql" # SQLite 数据库文件路径
+    # path: "db.sql" # 若使用 SQLite 请启用此项喵~
 
-# 默认地图配置
+# 🏰 默认地图配置
 arena:
-  name: "DefaultMap"
+  name: "梦幻之境" # 地图名称喵～
   world: "bedwars_world"
-  beds: {}
-  spawns: {}
-  shops: []
-  upgrades: []
+  beds: {}        # 各队床位置（通过游戏内指令设置）
+  spawns: {}      # 玩家出生点位
+  shops: []       # 商店NPC配置
+  upgrades: []    # 升级NPC配置
   waitingarea:
     pos1: ""
     pos2: ""
-  maxplayers: 4
-  teams: []
+  maxplayers: 8   # 最多8位萌萌勇者！
+  teams: []       # 队伍配置（红蓝黄绿喵~）
 
-# 粒子效果配置
+# ✨ 粒子效果配置 ✨
 effects:
-  # 床被破坏时的粒子效果
   bed_destroy:
     type: "REDSTONE"
-    color: "RED"
-  # 玩家死亡时的粒子效果
+    color: "LIGHT_PINK"  # 床碎裂时闪烁粉红光粒喵☆
   player_death:
-    type: "EXPLOSION_NORMAL"
-  # 资源生成时的粒子效果
+    type: "CLOUD"
   resource_generate:
-    type: "VILLAGER_HAPPY"
+    type: "SPELL_MOB_AMBIENT"  # 萌萌魔法能量聚集✨
 
-# 音效配置
+# 🎵 音效配置 🎵
 sounds:
-  # 床被破坏时的音效
   bed_destroy:
     type: "ENTITY_ENDERDRAGON_GROWL"
-    volume: 1.0
+    volume: 1.2
     pitch: 1.0
-  # 玩家死亡时的音效
   player_death:
-    type: "ENTITY_PLAYER_DEATH"
+    type: "ENTITY_CAT_HURT" # 喵喵的哀鸣~
     volume: 1.0
-    pitch: 1.0
-  # 游戏开始时的音效
+    pitch: 1.2
   game_start:
-    type: "ENTITY_WITHER_SPAWN"
+    type: "BLOCK_NOTE_BLOCK_PLING"
     volume: 1.0
-    pitch: 1.0
-  # 游戏结束时的音效
+    pitch: 1.8
   game_end:
-    type: "ENTITY_ENDERDRAGON_DEATH"
+    type: "ENTITY_PLAYER_LEVELUP"
     volume: 1.0
-    pitch: 1.0
+    pitch: 1.5
 
-# 计分板配置
+# 💫 计分板配置（梦幻版） 💫
 scoreboard:
-  # 计分板标题
-  title: "&6&l起床战争"
-  # 计分板内容
+  title: "&d✦ &b&l梦幻次元 &d✦"
   lines:
-    - "&f地图: &a{arena}"
-    - "&f玩家: &a{players}/{maxplayers}"
+    - "&r&f地图: &d{arena}"
+    - "&f玩家: &b{players}&7/&b{maxplayers}"
     - "&f队伍: &a{teams}"
     - ""
-    - "&f床数: &a{beds}"
-    - "&f击杀: &a{kills}"
+    - "&f床剩余: &c{beds}"
+    - "&f击杀数: &e{kills}"
     - ""
-    - "&ewww.mcbbs.net"
+    - "&d✧ &b为信仰而战喵~! &d✧"
+    - "&fPowered by &dNekoTeam☆"
+

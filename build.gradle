@@ -1,0 +1,33 @@
+plugins {
+    id 'java'
+}
+
+group = 'neko'
+version = '1.0-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'spigotmc-repo'
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+    maven {
+        name = 'sonatype'
+        url = 'https://oss.sonatype.org/content/groups/public/'
+    }
+}
+
+dependencies {
+    compileOnly 'org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT'
+    implementation 'org.xerial:sqlite-jdbc:3.42.0.0'
+    implementation 'mysql:mysql-connector-java:8.0.33'
+}
+
+processResources {
+    filter(org.apache.tools.ant.filters.ReplaceTokens, tokens: [version: project.version])
+}
+
+compileJava {
+    options.encoding = 'UTF-8'
+}

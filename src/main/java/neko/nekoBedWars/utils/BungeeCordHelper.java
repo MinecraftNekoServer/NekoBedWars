@@ -3,11 +3,9 @@ package neko.nekoBedWars.utils;
 import neko.nekoBedWars.NekoBedWars;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
-import org.bukkit.plugin.java.JavaPlugin;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 
 public class BungeeCordHelper implements PluginMessageListener {
     private NekoBedWars plugin;

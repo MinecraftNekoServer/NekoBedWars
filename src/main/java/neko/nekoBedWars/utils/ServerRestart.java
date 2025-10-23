@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 public class ServerRestart {
@@ -23,7 +22,9 @@ public class ServerRestart {
 
     public void restartServer() {
         // 保存所有玩家数据
-        plugin.getPlayerData().saveAll();
+        if (plugin.getPlayerData() != null) {
+            plugin.getPlayerData().saveAll();
+        }
         
         // 发送重启消息
         Bukkit.broadcastMessage("§6§l游戏结束! 服务器将在10秒后重启...");
