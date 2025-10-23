@@ -1,0 +1,79 @@
+# NekoBedWars 配置文件
+
+# 数据库配置
+database:
+  # 数据库类型 (MySQL, SQLite, etc.)
+  type: "MySQL"
+  # MySQL 配置
+  mysql:
+    host: "localhost"
+    port: 3306
+    database: "nekobedwars"
+    username: "root"
+    password: "password"
+    path: "db.sql" # SQLite 数据库文件路径
+
+# 默认地图配置
+arena:
+  name: "DefaultMap"
+  world: "bedwars_world"
+  beds: {}
+  spawns: {}
+  shops: []
+  upgrades: []
+  waitingarea:
+    pos1: ""
+    pos2: ""
+  maxplayers: 4
+  teams: []
+
+# 粒子效果配置
+effects:
+  # 床被破坏时的粒子效果
+  bed_destroy:
+    type: "REDSTONE"
+    color: "RED"
+  # 玩家死亡时的粒子效果
+  player_death:
+    type: "EXPLOSION_NORMAL"
+  # 资源生成时的粒子效果
+  resource_generate:
+    type: "VILLAGER_HAPPY"
+
+# 音效配置
+sounds:
+  # 床被破坏时的音效
+  bed_destroy:
+    type: "ENTITY_ENDERDRAGON_GROWL"
+    volume: 1.0
+    pitch: 1.0
+  # 玩家死亡时的音效
+  player_death:
+    type: "ENTITY_PLAYER_DEATH"
+    volume: 1.0
+    pitch: 1.0
+  # 游戏开始时的音效
+  game_start:
+    type: "ENTITY_WITHER_SPAWN"
+    volume: 1.0
+    pitch: 1.0
+  # 游戏结束时的音效
+  game_end:
+    type: "ENTITY_ENDERDRAGON_DEATH"
+    volume: 1.0
+    pitch: 1.0
+
+# 计分板配置
+scoreboard:
+  # 计分板标题
+  title: "&6&l起床战争"
+  # 计分板内容
+  lines:
+    - "&f地图: &a{arena}"
+    - "&f玩家: &a{players}/{maxplayers}"
+    - "&f队伍: &a{teams}"
+    - ""
+    - "&f床数: &a{beds}"
+    - "&f击杀: &a{kills}"
+    - ""
+    - "&ewww.mcbbs.net"

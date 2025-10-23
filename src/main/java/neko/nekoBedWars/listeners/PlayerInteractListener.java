@@ -1,0 +1,192 @@
+package neko.nekoBedWars.listeners;
+
+import neko.nekoBedWars.commands.BWCommand;
+import neko.nekoBedWars.NekoBedWars;
+import neko.nekoBedWars.GameArena;
+import neko.nekoBedWars.ArenaManager;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.entity.Player;
+import org.bukkit.Location;
+import org.bukkit.block.Block;
+import org.bukkit.Material;
+import org.bukkit.ChatColor;
+import java.util.Set;
+import java.util.HashSet;
+
+public class PlayerInteractListener implements Listener {
+    private NekoBedWars plugin;
+    private Set<Player> waitingAreaSelectionMode = new HashSet<>();
+    private Set<Player> bedSelectionMode = new HashSet<>();
+    private Set<Player> spawnSelectionMode = new HashSet<>();
+    private Set<Player> shopSelectionMode = new HashSet<>();
+    private Set<Player> upgradeSelectionMode = new HashSet<>();
+    private Set<Player> resourceSelectionMode = new HashSet<>();
+    private Set<Player> ncpSelectionMode = new HashSet<>();
+    private Set<Player> boundsSelectionMode = new HashSet<>();
+    
+    // 用于存储选择的位置
+    private Location pos1;
+    private Location pos2;
+
+    public PlayerInteractListener(NekoBedWars plugin) {
+        this.plugin = plugin;
+    }
+
+    @EventHandler
+    public void onPlayerInteract(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        Block block = event.getClickedBlock();
+        
+        if (block == null) return;
+        
+        // 处理等待区域选择
+        if (waitingAreaSelectionMode.contains(player)) {
+            handleWaitingAreaSelection(player, block.getLocation());
+            event.setCancelled(true);
+            return;
+        }
+        
+        // 处理床位置选择
+        if (bedSelectionMode.contains(player)) {
+            handleBedSelection(player, block.getLocation());
+            event.setCancelled(true);
+            return;
+        }
+        
+        // 处理出生点选择
+        if (spawnSelectionMode.contains(player)) {
+            handleSpawnSelection(player, block.getLocation());
+            event.setCancelled(true);
+            return;
+        }
+        
+        // 处理商店位置选择
+        if (shopSelectionMode.contains(player)) {
+            handleShopSelection(player, block.getLocation());
+            event.setCancelled(true);
+            return;
+        }
+        
+        // 处理升级台位置选择
+        if (upgradeSelectionMode.contains(player)) {
+            handleUpgradeSelection(player, block.getLocation());
+            event.setCancelled(true);
+            return;
+        }
+        
+        // 处理资源点选择
+        if (resourceSelectionMode.contains(player)) {
+            handleResourceSelection(player, block.getLocation());
+            event.setCancelled(true);
+            return;
+        }
+        
+        // 处理NCP位置选择
+        if (ncpSelectionMode.contains(player)) {
+            handleNcpSelection(player, block.getLocation());
+            event.setCancelled(true);
+            return;
+        }
+        
+        // 处理边界点选择
+        if (boundsSelectionMode.contains(player)) {
+            handleBoundsSelection(player, block.getLocation());
+            event.setCancelled(true);
+            return;
+        }
+    }
+
+    private void handleWaitingAreaSelection(Player player, Location location) {
+        if (pos1 == null) {
+            pos1 = location;
+            player.sendMessage(ChatColor.GREEN + "请左键点击选择等待区域的第二个点");
+        } else {
+            pos2 = location;
+            GameArena arena = ArenaManager.getInstance().getActiveArena();
+            if (arena != null) {
+                arena.setWaitingAreaPos1(pos1);
+                arena.setWaitingAreaPos2(pos2);
+                player.sendMessage(ChatColor.GREEN + "等待区域已设置");
+            } else {
+                player.sendMessage(ChatColor.RED + "没有激活的地图");
+            }
+            waitingAreaSelectionMode.remove(player);
+            pos1 = null;
+            pos2 = null;
+        }
+    }
+
+    private void handleBedSelection(Player player, Location location) {
+        GameArena arena = ArenaManager.getInstance().getActiveArena();
+        if (arena != null) {
+            // 这里需要知道是哪个队伍的床，暂时用红色队伍作为示例
+            arena.getBeds().put("red", location);
+            player.sendMessage(ChatColor.GREEN + "红色队伍的床位置已设置");
+        } else {
+            player.sendMessage(ChatColor.RED + "没有激活的地图");
+        }
+        bedSelectionMode.remove(player);
+    }
+
+    private void handleSpawnSelection(Player player, Location location) {
+        GameArena arena = ArenaManager.getInstance().getActiveArena();
+        if (arena != null) {
+            // 这里需要知道是哪个队伍的出生点，暂时用红色队伍作为示例
+            arena.getSpawns().put("red", location);
+            player.sendMessage(ChatColor.GREEN + "红色队伍的出生点已设置");
+        } else {
+            player.sendMessage(ChatColor.RED + "没有激活的地图");
+        }
+        spawnSelectionMode.remove(player);
+    }
+
+    private void handleShopSelection(Player player, Location location) {
+        GameArena arena = ArenaManager.getInstance().getActiveArena();
+        if (arena != null) {
+            arena.getShops().add(location);
+            player.sendMessage(ChatColor.GREEN + "商店位置已设置");
+        } else {
+            player.sendMessage(ChatColor.RED + "没有激活的地图");
+        }
+        shopSelectionMode.remove(player);
+    }
+
+    private void handleUpgradeSelection(Player player, Location location) {
+        GameArena arena = ArenaManager.getInstance().getActiveArena();
+        if (arena != null) {
+            arena.getUpgrades().add(location);
+            player.sendMessage(ChatColor.GREEN + "升级台位置已设置");
+        } else {
+            player.sendMessage(ChatColor.RED + "没有激活的地图");
+        }
+        upgradeSelectionMode.remove(player);
+    }
+
+    private void handleResourceSelection(Player player, Location location) {
+        // TODO: 实现资源点设置逻辑
+        player.sendMessage(ChatColor.GREEN + "资源点位置已设置");
+        resourceSelectionMode.remove(player);
+    }
+
+    private void handleNcpSelection(Player player, Location location) {
+        // TODO: 实现NCP位置设置逻辑
+        player.sendMessage(ChatColor.GREEN + "NCP位置已设置");
+        ncpSelectionMode.remove(player);
+    }
+
+    private void handleBoundsSelection(Player player, Location location) {
+        if (pos1 == null) {
+            pos1 = location;
+            player.sendMessage(ChatColor.GREEN + "请左键点击选择游戏区域边界的第二点");
+        } else {
+            pos2 = location;
+            // TODO: 实现边界设置逻辑
+            player.sendMessage(ChatColor.GREEN + "游戏区域边界已设置");
+            boundsSelectionMode.remove(player);
+            pos1 = null;
+            pos2 = null;
+        }
+    }
+}
