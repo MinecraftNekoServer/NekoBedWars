@@ -342,9 +342,77 @@ public class BWCommand implements CommandExecutor {
         // 退出配置模式
         createModePlayers.remove(player);
         
-        // TODO: 实现保存配置逻辑
+        // 保存配置到文件
+        saveArenaConfig();
+        
         player.sendMessage("§a地图配置已保存");
         return true;
+    }
+    
+    private void saveArenaConfig() {
+        GameArena arena = ArenaManager.getInstance().getActiveArena();
+        if (arena == null) return;
+        
+        // 获取配置文件
+        org.bukkit.configuration.file.FileConfiguration config = plugin.getConfig();
+        
+        // 保存地图基本信息
+        config.set("arena.name", arena.getName());
+        config.set("arena.world", arena.getWorld().getName());
+        
+        // 保存床位置
+        for (java.util.Map.Entry<String, Location> entry : arena.getBeds().entrySet()) {
+            String team = entry.getKey();
+            Location location = entry.getValue();
+            String locationStr = location.getX() + "," + location.getY() + "," + location.getZ();
+            config.set("arena.beds." + team, locationStr);
+        }
+        
+        // 保存出生点位置
+        for (java.util.Map.Entry<String, Location> entry : arena.getSpawns().entrySet()) {
+            String team = entry.getKey();
+            Location location = entry.getValue();
+            String locationStr = location.getX() + "," + location.getY() + "," + location.getZ();
+            config.set("arena.spawns." + team, locationStr);
+        }
+        
+        // 保存商店位置
+        java.util.List<String> shopLocations = new java.util.ArrayList<>();
+        for (Location location : arena.getShops()) {
+            String locationStr = location.getX() + "," + location.getY() + "," + location.getZ();
+            shopLocations.add(locationStr);
+        }
+        config.set("arena.shops", shopLocations);
+        
+        // 保存升级台位置
+        java.util.List<String> upgradeLocations = new java.util.ArrayList<>();
+        for (Location location : arena.getUpgrades()) {
+            String locationStr = location.getX() + "," + location.getY() + "," + location.getZ();
+            upgradeLocations.add(locationStr);
+        }
+        config.set("arena.upgrades", upgradeLocations);
+        
+        // 保存等待区域
+        if (arena.getWaitingAreaPos1() != null) {
+            Location pos1 = arena.getWaitingAreaPos1();
+            String pos1Str = pos1.getX() + "," + pos1.getY() + "," + pos1.getZ();
+            config.set("arena.waitingarea.pos1", pos1Str);
+        }
+        if (arena.getWaitingAreaPos2() != null) {
+            Location pos2 = arena.getWaitingAreaPos2();
+            String pos2Str = pos2.getX() + "," + pos2.getY() + "," + pos2.getZ();
+            config.set("arena.waitingarea.pos2", pos2Str);
+        }
+        
+        // 保存最大玩家数
+        config.set("arena.maxplayers", arena.getMaxPlayersPerTeam());
+        
+        // 保存队伍列表（从床的位置推断）
+        java.util.List<String> teams = new java.util.ArrayList<>(arena.getBeds().keySet());
+        config.set("arena.teams", teams);
+        
+        // 保存配置文件
+        plugin.saveConfig();
     }
     
     private void giveConfigurationTools(Player player) {
@@ -385,27 +453,105 @@ public class BWCommand implements CommandExecutor {
         player.getInventory().setItem(8, barrierItem);
         
         player.sendMessage("§a配置工具已发放，请使用物品栏中的工具进行配置");
-    }
-    
-    private void setItemDisplayName(org.bukkit.inventory.ItemStack item, String displayName, String lore) {
-        org.bukkit.inventory.meta.ItemMeta meta = item.getItemMeta();
-        if (meta != null) {
-            meta.setDisplayName(displayName);
-            java.util.List<String> loreList = new java.util.ArrayList<>();
-            loreList.add(lore);
-            meta.setLore(loreList);
-            item.setItemMeta(meta);
-        }
-    }
-    
-    private void teleportToCenter(Player player, GameArena arena) {
-        // 计算地图中心位置
-        Location center = player.getWorld().getSpawnLocation(); // 简化处理，使用世界出生点
-        player.teleport(center);
-        
-        // 设置玩家视角居中
-        player.setCompassTarget(center);
-        
-        player.sendMessage("§a已传送至地图中心");
-    }
+    }
+    }
+    
+    private boolean handleSaveCommand(Player player) {
+        // 退出配置模式
+        createModePlayers.remove(player);
+        
+        // 保存配置到文件
+        saveArenaConfig();
+        
+        player.sendMessage("§a地图配置已保存");
+        return true;
+    }
+    
+    private void saveArenaConfig() {
+        GameArena arena = ArenaManager.getInstance().getActiveArena();
+        if (arena == null) return;
+        
+        // 获取配置文件
+        org.bukkit.configuration.file.FileConfiguration config = plugin.getConfig();
+        
+        // 保存地图基本信息
+        config.set("arena.name", arena.getName());
+        config.set("arena.world", arena.getWorld().getName());
+        
+        // 保存床位置
+        for (java.util.Map.Entry<String, Location> entry : arena.getBeds().entrySet()) {
+            String team = entry.getKey();
+            Location location = entry.getValue();
+            String locationStr = location.getX() + "," + location.getY() + "," + location.getZ();
+            config.set("arena.beds." + team, locationStr);
+        }
+        
+        // 保存出生点位置
+        for (java.util.Map.Entry<String, Location> entry : arena.getSpawns().entrySet()) {
+            String team = entry.getKey();
+            Location location = entry.getValue();
+            String locationStr = location.getX() + "," + location.getY() + "," + location.getZ();
+            config.set("arena.spawns." + team, locationStr);
+        }
+        
+        // 保存商店位置
+        java.util.List<String> shopLocations = new java.util.ArrayList<>();
+        for (Location location : arena.getShops()) {
+            String locationStr = location.getX() + "," + location.getY() + "," + location.getZ();
+            shopLocations.add(locationStr);
+        }
+        config.set("arena.shops", shopLocations);
+        
+        // 保存升级台位置
+        java.util.List<String> upgradeLocations = new java.util.ArrayList<>();
+        for (Location location : arena.getUpgrades()) {
+            String locationStr = location.getX() + "," + location.getY() + "," + location.getZ();
+            upgradeLocations.add(locationStr);
+        }
+        config.set("arena.upgrades", upgradeLocations);
+        
+        // 保存等待区域
+        if (arena.getWaitingAreaPos1() != null) {
+            Location pos1 = arena.getWaitingAreaPos1();
+            String pos1Str = pos1.getX() + "," + pos1.getY() + "," + pos1.getZ();
+            config.set("arena.waitingarea.pos1", pos1Str);
+        }
+        if (arena.getWaitingAreaPos2() != null) {
+            Location pos2 = arena.getWaitingAreaPos2();
+            String pos2Str = pos2.getX() + "," + pos2.getY() + "," + pos2.getZ();
+            config.set("arena.waitingarea.pos2", pos2Str);
+        }
+        
+        // 保存最大玩家数
+        config.set("arena.maxplayers", arena.getMaxPlayersPerTeam());
+        
+        // 保存队伍列表（从床的位置推断）
+        java.util.List<String> teams = new java.util.ArrayList<>(arena.getBeds().keySet());
+        config.set("arena.teams", teams);
+        
+        // 保存配置文件
+        plugin.saveConfig();
+    }
+    
+    private void setItemDisplayName(org.bukkit.inventory.ItemStack item, String displayName, String lore) {
+        org.bukkit.inventory.meta.ItemMeta meta = item.getItemMeta();
+        if (meta != null) {
+            meta.setDisplayName(displayName);
+            java.util.List<String> loreList = new java.util.ArrayList<>();
+            loreList.add(lore);
+            meta.setLore(loreList);
+            item.setItemMeta(meta);
+        }
+    }
+    
+    private void teleportToCenter(Player player, GameArena arena) {
+        // 计算地图中心位置
+        Location center = player.getWorld().getSpawnLocation(); // 简化处理，使用世界出生点
+        player.teleport(center);
+        
+        // 设置玩家视角居中
+        player.setCompassTarget(center);
+        
+        player.sendMessage("§a已传送至地图中心");
+    }
 }

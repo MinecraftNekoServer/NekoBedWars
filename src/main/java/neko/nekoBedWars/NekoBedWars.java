@@ -8,6 +8,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.World;
+import org.bukkit.scheduler.BukkitRunnable;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -41,6 +43,9 @@ public final class NekoBedWars extends JavaPlugin {
         // 注册指令和事件监听器
         registerCommands();
         registerEvents();
+        
+        // 启动天气锁定任务
+        startWeatherLockTask();
         
         logger.info("NekoBedWars 插件已启用!");
     }
@@ -105,6 +110,20 @@ public final class NekoBedWars extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(this), this);
         Bukkit.getPluginManager().registerEvents(new GUIListener(this), this);
         logger.info("事件监听器注册完成");
+    }
+    
+    private void startWeatherLockTask() {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                // 锁定所有世界的天气为晴朗无雨
+                for (World world : Bukkit.getWorlds()) {
+                    world.setStorm(false);
+                    world.setThundering(false);
+                    world.setWeatherDuration(0);
+                }
+            }
+        }.runTaskTimer(this, 0L, 6000L); // 每5分钟检查一次天气
     }
     
     public static NekoBedWars getInstance() {
