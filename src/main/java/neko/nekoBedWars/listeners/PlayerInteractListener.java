@@ -21,7 +21,6 @@ import java.util.HashSet;
 
 public class PlayerInteractListener implements Listener {
     private NekoBedWars plugin;
-    private Set<Player> waitingAreaSelectionMode = new HashSet<>();
     private Set<Player> bedSelectionMode = new HashSet<>();
     private Set<Player> spawnSelectionMode = new HashSet<>();
     private Set<Player> shopSelectionMode = new HashSet<>();
@@ -51,25 +50,18 @@ public class PlayerInteractListener implements Listener {
             return;
         }
         
-        // 处理等待区域选择
-        if (waitingAreaSelectionMode.contains(player)) {
-            handleWaitingAreaSelection(player, block.getLocation());
-            event.setCancelled(true);
-            return;
-        }
-        
-        // 处理床位置选择
-        if (bedSelectionMode.contains(player)) {
-            handleBedSelection(player, block.getLocation());
-            event.setCancelled(true);
-            return;
-        }
-        
-        // 处理出生点选择
-        if (spawnSelectionMode.contains(player)) {
-            handleSpawnSelection(player, block.getLocation());
-            event.setCancelled(true);
-            return;
+        // 处理床位置选择
+        if (bedSelectionMode.contains(player)) {
+            handleBedSelection(player, block.getLocation());
+            event.setCancelled(true);
+            return;
+        }
+        
+        // 处理出生点选择
+        if (spawnSelectionMode.contains(player)) {
+            handleSpawnSelection(player, block.getLocation());
+            event.setCancelled(true);
+            return;
         }
         
         // 处理商店位置选择
@@ -199,29 +191,9 @@ public class PlayerInteractListener implements Listener {
             }
         }
         
-        event.setCancelled(true);
-    }
-
-    private void handleWaitingAreaSelection(Player player, Location location) {
-        if (pos1 == null) {
-            pos1 = location;
-            player.sendMessage(ChatColor.GREEN + "请左键点击选择等待区域的第二个点");
-        } else {
-            pos2 = location;
-            GameArena arena = ArenaManager.getInstance().getActiveArena();
-            if (arena != null) {
-                arena.setWaitingAreaPos1(pos1);
-                arena.setWaitingAreaPos2(pos2);
-                player.sendMessage(ChatColor.GREEN + "等待区域已设置");
-            } else {
-                player.sendMessage(ChatColor.RED + "没有激活的地图");
-            }
-            waitingAreaSelectionMode.remove(player);
-            pos1 = null;
-            pos2 = null;
-        }
-    }
-
+        event.setCancelled(true);
+    }
+
     private void handleBedSelection(Player player, Location location) {
         GameArena arena = ArenaManager.getInstance().getActiveArena();
         if (arena != null) {

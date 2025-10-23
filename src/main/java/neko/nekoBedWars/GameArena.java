@@ -18,6 +18,7 @@ public class GameArena {
     private List<Location> upgrades;
     private Location waitingAreaPos1;
     private Location waitingAreaPos2;
+    private Location waitingSpawnPoint; // 等待区出生点
     private int maxPlayersPerTeam;
     private List<String> teams;
     private GameState state;
@@ -38,6 +39,7 @@ public class GameArena {
         this.teamPlayersCount = new HashMap<>();
         this.players = new ArrayList<>();
         this.maxPlayersPerTeam = 4; // 默认每队4人
+        this.waitingSpawnPoint = null; // 初始化等待区出生点
     }
 
     public enum GameState {
@@ -87,6 +89,14 @@ public class GameArena {
 
     public void setWaitingAreaPos2(Location waitingAreaPos2) {
         this.waitingAreaPos2 = waitingAreaPos2;
+    }
+
+    public Location getWaitingSpawnPoint() {
+        return waitingSpawnPoint;
+    }
+
+    public void setWaitingSpawnPoint(Location waitingSpawnPoint) {
+        this.waitingSpawnPoint = waitingSpawnPoint;
     }
 
     public int getMaxPlayersPerTeam() {

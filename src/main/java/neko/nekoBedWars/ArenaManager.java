@@ -78,24 +78,33 @@ public class ArenaManager {
                     }
                 }
                 
-                // 加载等待区域
-                String pos1Str = config.getString("arena.waitingarea.pos1");
-                String pos2Str = config.getString("arena.waitingarea.pos2");
-                if (pos1Str != null && !pos1Str.isEmpty()) {
-                    Location pos1 = parseLocation(pos1Str, world);
-                    if (pos1 != null) {
-                        arena.setWaitingAreaPos1(pos1);
-                    }
-                }
-                if (pos2Str != null && !pos2Str.isEmpty()) {
-                    Location pos2 = parseLocation(pos2Str, world);
-                    if (pos2 != null) {
-                        arena.setWaitingAreaPos2(pos2);
-                    }
-                }
-                
-                // 加载最大玩家数
-                int maxPlayers = config.getInt("arena.maxplayers", 4);
+                // 加载等待区域
+                String pos1Str = config.getString("arena.waitingarea.pos1");
+                String pos2Str = config.getString("arena.waitingarea.pos2");
+                if (pos1Str != null && !pos1Str.isEmpty()) {
+                    Location pos1 = parseLocation(pos1Str, world);
+                    if (pos1 != null) {
+                        arena.setWaitingAreaPos1(pos1);
+                    }
+                }
+                if (pos2Str != null && !pos2Str.isEmpty()) {
+                    Location pos2 = parseLocation(pos2Str, world);
+                    if (pos2 != null) {
+                        arena.setWaitingAreaPos2(pos2);
+                    }
+                }
+                
+                // 加载等待区出生点
+                String waitingSpawnStr = config.getString("arena.waitingspawn");
+                if (waitingSpawnStr != null && !waitingSpawnStr.isEmpty()) {
+                    Location waitingSpawn = parseLocation(waitingSpawnStr, world);
+                    if (waitingSpawn != null) {
+                        arena.setWaitingSpawnPoint(waitingSpawn);
+                    }
+                }
+                
+                // 加载最大玩家数
+                int maxPlayers = config.getInt("arena.maxplayers", 4);
                 arena.setMaxPlayersPerTeam(maxPlayers);
                 
                 // 加载队伍列表

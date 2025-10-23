@@ -60,6 +60,8 @@ public class BWCommand implements CommandExecutor {
             player.sendMessage("§e/bw reload §7- 重新加载配置文件");
             player.sendMessage("§e/bw stats §7- 查看个人游戏数据");
             player.sendMessage("§e/bw gui §7- 打开图形界面快捷操作菜单");
+            player.sendMessage("§e/bw setwaitingarea §7- 设置等待区域点（执行两次设置两个点）");
+            player.sendMessage("§e/bw setwaitingspawn §7- 设置等待区出生点（使用当前位置）");
             return true;
         }
 
@@ -80,25 +82,27 @@ public class BWCommand implements CommandExecutor {
                 return handleGuiCommand(player);
             case "create":
                 return handleCreateCommand(player, args);
-            case "setwaitingarea":
-                return handleSetWaitingAreaCommand(player);
-            case "setspawn":
-                return handleSetSpawnCommand(player, args);
-            case "setbed":
-                return handleSetBedCommand(player, args);
-            case "setshop":
-                return handleSetShopCommand(player);
-            case "setupgrade":
-                return handleSetUpgradeCommand(player);
-            case "setresource":
-                return handleSetResourceCommand(player, args);
-            case "setncp":
-                return handleSetNcpCommand(player);
-            case "setbounds":
-                return handleSetBoundsCommand(player);
-            case "setmaxplayers":
-                return handleSetMaxPlayersCommand(player, args);
-            case "save":
+            case "setwaitingarea":
+                return handleSetWaitingAreaCommand(player);
+            case "setwaitingspawn":
+                return handleSetWaitingSpawnCommand(player);
+            case "setspawn":
+                return handleSetSpawnCommand(player, args);
+            case "setbed":
+                return handleSetBedCommand(player, args);
+            case "setshop":
+                return handleSetShopCommand(player);
+            case "setupgrade":
+                return handleSetUpgradeCommand(player);
+            case "setresource":
+                return handleSetResourceCommand(player, args);
+            case "setncp":
+                return handleSetNcpCommand(player);
+            case "setbounds":
+                return handleSetBoundsCommand(player);
+            case "setmaxplayers":
+                return handleSetMaxPlayersCommand(player, args);
+            case "save":
                 return handleSaveCommand(player);
             default:
                 player.sendMessage("§c未知指令，使用 /bw 查看帮助");
@@ -230,8 +234,35 @@ public class BWCommand implements CommandExecutor {
     }
 
     private boolean handleSetWaitingAreaCommand(Player player) {
-        waitingAreaSelectionMode.add(player);
-        player.sendMessage("§a请左键点击选择等待区域的第一个点");
+        GameArena arena = ArenaManager.getInstance().getActiveArena();
+        if (arena != null) {
+            // 使用玩家当前位置作为等待区域的一个点
+            Location playerLoc = player.getLocation();
+            if (arena.getWaitingAreaPos1() == null) {
+                arena.setWaitingAreaPos1(playerLoc);
+                player.sendMessage("§a已设置等待区域第一个点");
+                player.sendMessage("§e请移动到另一个位置并再次执行此命令设置第二个点");
+            } else {
+                arena.setWaitingAreaPos2(playerLoc);
+                player.sendMessage("§a已设置等待区域第二个点");
+                player.sendMessage("§a等待区域已成功设置");
+            }
+        } else {
+            player.sendMessage("§c没有激活的地图");
+        }
+        return true;
+    }
+
+    private boolean handleSetWaitingSpawnCommand(Player player) {
+        GameArena arena = ArenaManager.getInstance().getActiveArena();
+        if (arena != null) {
+            // 使用玩家当前位置作为等待区出生点
+            Location playerLoc = player.getLocation();
+            arena.setWaitingSpawnPoint(playerLoc);
+            player.sendMessage("§a已设置等待区出生点位置");
+        } else {
+            player.sendMessage("§c没有激活的地图");
+        }
         return true;
     }
 
@@ -444,6 +475,13 @@ public class BWCommand implements CommandExecutor {
             Location pos2 = arena.getWaitingAreaPos2();
             String pos2Str = pos2.getX() + "," + pos2.getY() + "," + pos2.getZ();
             config.set("arena.waitingarea.pos2", pos2Str);
+        }
+        
+        // 保存等待区出生点
+        if (arena.getWaitingSpawnPoint() != null) {
+            Location spawnPoint = arena.getWaitingSpawnPoint();
+            String spawnPointStr = spawnPoint.getX() + "," + spawnPoint.getY() + "," + spawnPoint.getZ();
+            config.set("arena.waitingspawn", spawnPointStr);
         }
         
         // 保存最大玩家数
