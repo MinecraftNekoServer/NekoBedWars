@@ -91,20 +91,31 @@ sounds:
     type: ENTITY_PLAYER_LEVELUP
     volume: 1.0
     pitch: 1.5
-scoreboard:
-  title: '&d✦ &b&l梦幻次元 &d✦'
-  lines:
-    - '&r&f地图: &d{arena}'
-    - '&f玩家: &b{players}&7/&b{maxplayers}'
-    - '&f队伍: &a{teams}'
-    - ''
-    - '&f床剩余: &c{beds}'
-    - '&f击杀数: &e{kills}'
-    - ''
-    - '&d✧ &b为信仰而战喵~! &d✧'
+scoreboard:
+  title: '&d✦ &b&l梦幻次元 &d✦'
+  lines:
+    - '&r&f地图: &d{arena}'
+    - '&f玩家: &b{players}&7/&b{maxplayers}'
+    - '&f队伍: &a{teams}'
+    - '&f状态: &e{gamestate}'
+    - ''
+    - '&f床剩余: &c{beds_remaining}'
+    - '&f击杀数: &e{kills}'
+    - ''
+    - '&d✧ &b为信仰而战喵~! &d✧'
+    - '&fPowered by &dNekoTeam☆'
+  waiting-title: '&6&l等待大厅'
+  waiting-lines:
+    - '&f地图: &a{arena}'
+    - '&f玩家: &b{players}&7/&b{maxplayers}'
+    - ''
+    - '&e等待其他玩家加入...'
+    - '&f还需要 &c{playersneeded} &f名玩家'
+    - ''
+    - '&d✧ &b为信仰而战喵~! &d✧'
     - '&fPowered by &dNekoTeam☆'
-game:
-  countdown: 30
-  restart-time: 10
-arena:
+game:
+  countdown: 30
+  restart-time: 10
+arena:
   configured: false

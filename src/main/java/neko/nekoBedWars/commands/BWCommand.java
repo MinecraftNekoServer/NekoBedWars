@@ -1,18 +1,21 @@
-package neko.nekoBedWars.commands;
-
-import neko.nekoBedWars.NekoBedWars;
-import neko.nekoBedWars.GameArena;
-import neko.nekoBedWars.ArenaManager;
-import neko.nekoBedWars.gui.GameGUI;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.Location;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+package neko.nekoBedWars.commands;
+
+import neko.nekoBedWars.NekoBedWars;
+import neko.nekoBedWars.GameArena;
+import neko.nekoBedWars.ArenaManager;
+import neko.nekoBedWars.gui.GameGUI;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class BWCommand implements CommandExecutor {
@@ -117,36 +120,94 @@ public class BWCommand implements CommandExecutor {
         }
     }
 
-    private boolean handleJoinCommand(Player player, String[] args) {
-        if (args.length < 2) {
-            player.sendMessage("§c用法: /bw join <地图名称>");
-            return true;
+    private boolean handleJoinCommand(Player player, String[] args) {
+        if (args.length < 2) {
+            player.sendMessage("§c用法: /bw join <地图名称>");
+            return true;
+        }
+        
+        String arenaName = args[1];
+        GameArena arena = ArenaManager.getInstance().getArenas().get(arenaName);
+        
+        if (arena == null) {
+            player.sendMessage("§c地图 " + arenaName + " 不存在");
+            return true;
+        }
+        
+        // 检查是否处于配置模式
+        if (plugin.isConfigurationMode()) {
+            player.sendMessage("§c插件当前处于配置模式，无法加入游戏");
+            player.sendMessage("§e使用 /bw game start 切换到游戏模式");
+            return true;
+        }
+        
+        if (arena.addPlayer(player)) {
+            player.sendMessage("§a成功加入地图 " + arenaName);
+            
+            // 显示等待区域计分板
+            plugin.getWaitingScoreboard().addPlayer(player);
+            plugin.getWaitingScoreboard().updateScoreboard(arena);
+            
+            // 给玩家发放返回大厅物品
+            giveLobbyReturnItem(player);
+            
+            // 发送等待中的提示消息
+            sendWaitingMessages(player, arena);
+            
+            // 传送玩家到等待区域出生点
+            if (arena.getWaitingSpawnPoint() != null) {
+                player.teleport(arena.getWaitingSpawnPoint());
+                player.sendMessage("§a已传送到等待区域出生点");
+            } else {
+                player.sendMessage("§c警告: 未设置等待区域出生点，请联系管理员");
+            }
+        } else {
+            player.sendMessage("§c无法加入地图 " + arenaName + "，可能已满人或游戏已开始");
+        }
+        
+        return true;
+    }
+
+    /**
+     * 发送等待中的提示消息
+     */
+    private void sendWaitingMessages(Player player, GameArena arena) {
+        // 发送欢迎消息
+        player.sendMessage("§a欢迎加入起床战争游戏!");
+        player.sendMessage("§e你当前在等待区域，请等待其他玩家加入...");
+        
+        // 根据当前游戏状态发送不同消息
+        switch (arena.getState()) {
+            case WAITING:
+                int playerCount = arena.getPlayers().size();
+                int minPlayers = arena.getTeams().size() * 1;
+                int playersNeeded = Math.max(0, minPlayers - playerCount);
+                
+                if (playersNeeded > 0) {
+                    player.sendMessage("§e还需要 §b" + playersNeeded + " §e名玩家才能开始游戏");
+                } else {
+                    player.sendMessage("§a已满足开始条件，游戏即将开始!");
+                }
+                break;
+                
+            case STARTING:
+                player.sendMessage("§e游戏即将开始，请做好准备!");
+                break;
+                
+            case INGAME:
+                player.sendMessage("§c游戏正在进行中，你将作为观战者加入");
+                break;
+                
+            default:
+                player.sendMessage("§e请等待游戏开始...");
+                break;
         }
         
-        String arenaName = args[1];
-        GameArena arena = ArenaManager.getInstance().getArenas().get(arenaName);
-        
-        if (arena == null) {
-            player.sendMessage("§c地图 " + arenaName + " 不存在");
-            return true;
-        }
-        
-        if (arena.addPlayer(player)) {
-            player.sendMessage("§a成功加入地图 " + arenaName);
-            
-            // 显示计分板
-            plugin.getGameScoreboard().addPlayer(player);
-            plugin.getGameScoreboard().updateScoreboard(arena);
-            
-            // 传送玩家到等待区域出生点
-            if (arena.getWaitingSpawnPoint() != null) {
-                player.teleport(arena.getWaitingSpawnPoint());
-            }
-        } else {
-            player.sendMessage("§c无法加入地图 " + arenaName + "，可能已满人或游戏已开始");
-        }
-        
-        return true;
+        player.sendMessage("§7--------------------");
+        player.sendMessage("§b游戏提示:");
+        player.sendMessage("§f- 不要离开等待区域");
+        player.sendMessage("§f- 准备好迎接战斗!");
+        player.sendMessage("§7--------------------");
     }
 
     private boolean handleLeaveCommand(Player player) {
@@ -663,6 +724,13 @@ public class BWCommand implements CommandExecutor {
         java.util.List<String> teams = new java.util.ArrayList<>(arena.getBeds().keySet());
         config.set("arena.teams", teams);
         
+        // 保存床状态
+        for (Map.Entry<String, Boolean> entry : arena.getBedDestroyed().entrySet()) {
+            String team = entry.getKey();
+            boolean destroyed = entry.getValue();
+            config.set("arena.bed-destroyed." + team, destroyed);
+        }
+        
         // 保存配置文件
         plugin.saveConfig();
     }
@@ -687,5 +755,25 @@ public class BWCommand implements CommandExecutor {
         player.setCompassTarget(center);
         
         player.sendMessage("§a已传送至地图中心");
+    }
+    
+    /**
+     * 给玩家发放返回大厅物品
+     */
+    private void giveLobbyReturnItem(Player player) {
+        // 创建返回大厅物品（粘液球）
+        ItemStack lobbyItem = new ItemStack(Material.SLIME_BALL, 1);
+        ItemMeta meta = lobbyItem.getItemMeta();
+        if (meta != null) {
+            meta.setDisplayName("§a返回大厅");
+            meta.setLore(java.util.Arrays.asList(
+                "§7右键点击返回大厅",
+                "§7再次点击可取消返回"
+            ));
+            lobbyItem.setItemMeta(meta);
+        }
+        
+        // 将物品放在玩家物品栏的第9格（索引8）
+        player.getInventory().setItem(8, lobbyItem);
     }
 }

@@ -1,30 +1,37 @@
-package neko.nekoBedWars;
-
-import neko.nekoBedWars.commands.BWCommand;
-import neko.nekoBedWars.database.PlayerData;
-import neko.nekoBedWars.listeners.GUIListener;
-import neko.nekoBedWars.listeners.PlayerInteractListener;
-import neko.nekoBedWars.scoreboard.GameScoreboard;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.Bukkit;
-import org.bukkit.command.PluginCommand;
-import org.bukkit.World;
-import org.bukkit.scheduler.BukkitRunnable;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+package neko.nekoBedWars;
+
+import neko.nekoBedWars.commands.BWCommand;
+import neko.nekoBedWars.database.PlayerData;
+import neko.nekoBedWars.listeners.GUIListener;
+import neko.nekoBedWars.listeners.HungerListener;
+import neko.nekoBedWars.listeners.LobbyReturnListener;
+import neko.nekoBedWars.listeners.PlayerInteractListener;
+import neko.nekoBedWars.listeners.PlayerJoinListener;
+import neko.nekoBedWars.listeners.PVPListener;
+import neko.nekoBedWars.listeners.WaitingAreaListener;
+import neko.nekoBedWars.scoreboard.GameScoreboard;
+import neko.nekoBedWars.scoreboard.WaitingScoreboard;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.Bukkit;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.World;
+import org.bukkit.scheduler.BukkitRunnable;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.logging.Logger;
 
-public final class NekoBedWars extends JavaPlugin {
-    private static NekoBedWars instance;
-    private FileConfiguration config;
-    private Connection databaseConnection;
-    private Logger logger;
-    private PlayerData playerData;
-    private GUIListener guiListener;
-    private boolean configurationMode = true; // 配置模式标记，默认为true
-    private GameScoreboard gameScoreboard; // 游戏计分板
+public final class NekoBedWars extends JavaPlugin {
+    private static NekoBedWars instance;
+    private FileConfiguration config;
+    private Connection databaseConnection;
+    private Logger logger;
+    private PlayerData playerData;
+    private GUIListener guiListener;
+    private boolean configurationMode = true; // 配置模式标记，默认为true
+    private GameScoreboard gameScoreboard; // 游戏计分板
+    private WaitingScoreboard waitingScoreboard; // 等待区域计分板
     private GameManager gameManager; // 游戏管理器
 
     @Override
@@ -48,8 +55,9 @@ public final class NekoBedWars extends JavaPlugin {
             playerData = new PlayerData(databaseConnection);
         }
         
-        // 初始化游戏计分板
-        gameScoreboard = new GameScoreboard(this);
+        // 初始化游戏计分板
+        gameScoreboard = new GameScoreboard(this);
+        waitingScoreboard = new WaitingScoreboard(this);
         
         // 加载地图配置
         ArenaManager.getInstance().loadArenas();
@@ -58,6 +66,7 @@ public final class NekoBedWars extends JavaPlugin {
         GameArena activeArena = ArenaManager.getInstance().getActiveArena();
         if (activeArena != null) {
             gameManager = new GameManager(this, activeArena);
+            gameManager.initialize(); // 初始化游戏管理器
         }
         
         // 输出当前地图信息
@@ -75,9 +84,6 @@ public final class NekoBedWars extends JavaPlugin {
         
         // 启动天气锁定任务
         startWeatherLockTask();
-        
-        // 启动游戏检查任务
-        startGameCheckTask();
         
         logger.info("NekoBedWars 插件已启用!");
     }
@@ -130,7 +136,16 @@ public final class NekoBedWars extends JavaPlugin {
     
     private void checkConfigurationStatus() {
         // 检查配置文件中是否已标记为配置完成
+        // configured为false表示配置完成，进入游戏模式
         configurationMode = config.getBoolean("arena.configured", true);
+        
+        // 输出当前模式状态
+        getLogger().info("配置模式状态: " + configurationMode);
+        if (!configurationMode) {
+            getLogger().info("插件处于游戏模式");
+        } else {
+            getLogger().info("插件处于配置模式");
+        }
     }
     
     private void registerCommands() {
@@ -142,12 +157,17 @@ public final class NekoBedWars extends JavaPlugin {
         logger.info("指令注册完成");
     }
     
-    private void registerEvents() {
-        // 注册事件监听器
-        Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(this), this);
-        guiListener = new GUIListener(this);
-        Bukkit.getPluginManager().registerEvents(guiListener, this);
-        logger.info("事件监听器注册完成");
+    private void registerEvents() {
+        // 注册事件监听器
+        Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(this), this);
+        guiListener = new GUIListener(this);
+        Bukkit.getPluginManager().registerEvents(guiListener, this);
+        Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new WaitingAreaListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new HungerListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new PVPListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new LobbyReturnListener(this), this);
+        logger.info("事件监听器注册完成");
     }
     
     private void startWeatherLockTask() {
@@ -188,12 +208,16 @@ public final class NekoBedWars extends JavaPlugin {
         this.configurationMode = configurationMode;
     }
     
-    public GameScoreboard getGameScoreboard() {
-        return gameScoreboard;
-    }
-    
-    public GameManager getGameManager() {
-        return gameManager;
+    public GameScoreboard getGameScoreboard() {
+        return gameScoreboard;
+    }
+    
+    public WaitingScoreboard getWaitingScoreboard() {
+        return waitingScoreboard;
+    }
+    
+    public GameManager getGameManager() {
+        return gameManager;
     }
     
     /**
@@ -203,8 +227,7 @@ public final class NekoBedWars extends JavaPlugin {
         // 每5秒检查一次游戏状态
         getServer().getScheduler().runTaskTimer(this, () -> {
             if (gameManager != null && !configurationMode) {
-                gameManager.checkGameStart();
-                gameManager.checkGameEnd();
+                gameManager.checkGameState();
             }
         }, 100L, 100L); // 延迟5秒开始，每5秒执行一次
     }

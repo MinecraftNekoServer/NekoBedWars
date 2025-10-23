@@ -161,25 +161,32 @@ public class ArenaManager {
 
                 arena.setMaxPlayersPerTeam(maxPlayers);
                 
-                // 加载队伍列表
-
                 if (config.contains("arena.teams")) {
-
                     arena.getTeams().addAll(config.getStringList("arena.teams"));
-
                 }
-
                 
-
+                // 加载床状态
+                if (config.contains("arena.bed-destroyed")) {
+                    for (String team : config.getConfigurationSection("arena.bed-destroyed").getKeys(false)) {
+                        boolean destroyed = config.getBoolean("arena.bed-destroyed." + team);
+                        arena.getBedDestroyed().put(team, destroyed);
+                    }
+                } else {
+                    // 如果没有床状态配置，默认所有床都未被破坏
+                    for (String team : arena.getTeams()) {
+                        arena.getBedDestroyed().put(team, false);
+                    }
+                }
+                
                 arenas.put(arenaName, arena);
-
                 activeArena = arena;
 
                 
 
                 // 标记插件配置完成
 
-                NekoBedWars.getInstance().setConfigurationMode(false);
+                // 不再在这里强制设置配置模式，而是根据配置文件中的设置来决定
+                // NekoBedWars.getInstance().setConfigurationMode(false);
 
                 
 

@@ -58,6 +58,37 @@ public class GameScoreboard {
         line = line.replace("{maxplayers}", String.valueOf(arena.getTeams().size() * arena.getMaxPlayersPerTeam()));
         line = line.replace("{teams}", String.valueOf(arena.getTeams().size()));
         line = line.replace("{beds}", String.valueOf(arena.getBeds().size()));
+        
+        // 添加游戏状态变量
+        String gameState = "未知";
+        switch (arena.getState()) {
+            case WAITING:
+                gameState = "等待中";
+                break;
+            case STARTING:
+                gameState = "即将开始";
+                break;
+            case INGAME:
+                gameState = "进行中";
+                break;
+            case ENDING:
+                gameState = "结束中";
+                break;
+            case RESTARTING:
+                gameState = "重启中";
+                break;
+        }
+        line = line.replace("{gamestate}", gameState);
+        
+        // 添加床剩余数量（未被破坏的床）
+        int bedsRemaining = 0;
+        for (String team : arena.getTeams()) {
+            if (!arena.isBedDestroyed(team)) {
+                bedsRemaining++;
+            }
+        }
+        line = line.replace("{beds_remaining}", String.valueOf(bedsRemaining));
+        
         // TODO: 实现击杀数统计
         line = line.replace("{kills}", "0");
         
