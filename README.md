@@ -114,26 +114,23 @@ arena:
 ## 指令使用
 
 ### 基本指令
-- `/bw join <地图名称>`: 加入指定地图游戏
-- `/bw leave`: 离开当前游戏
-- `/bw start`: 强制开始当前游戏（需要权限）
-- `/bw stop`: 停止当前地图游戏（需要权限）
-- `/bw reload`: 重新加载配置文件（需要权限）
+- `/bw start`: 强制开始当前游戏（需要bw.admin权限）
+- `/bw stop`: 停止当前地图游戏（需要bw.admin权限）
+- `/bw reload`: 重新加载配置文件（需要bw.admin权限）
 - `/bw stats`: 查看个人游戏数据
-- `/bw gui`: 打开图形界面快捷操作菜单
-- `/bw create <地图名称>`: 创建新地图并进入配置模式
-- `/bw game start`: 启动游戏模式
-- `/bw game stop`: 启动配置模式
+- `/bw create <地图名称>`: 创建新地图并进入配置模式（需要bw.admin权限）
+- `/bw game start`: 启动游戏模式（需要bw.admin权限）
+- `/bw game stop`: 启动配置模式（需要bw.admin权限）
 
 ### 动态配置指令
-- `/bw setwaitingarea`: 设置等待区域（执行两次设置两个点，使用玩家当前位置）
-- `/bw setwaitingspawn`: 设置等待区出生点（使用玩家当前位置）
-- `/bw setspawn <队伍颜色>`: 设置指定队伍的出生点
-- `/bw setbed <队伍颜色>`: 设置指定队伍的床位置
-- `/bw setshop`: 设置商店位置
-- `/bw setupgrade`: 设置升级台位置
-- `/bw setresource <资源类型>`: 设置指定类型的资源点位置
-- `/bw setncp`: 设置NCP位置
-- `/bw setbounds`: 设置游戏区域边界点（需要设置两个点）
-- `/bw setmaxplayers <人数>`: 设置每队最大玩家数（默认4人）
-- `/bw save`: 保存当前地图配置
+- `/bw setwaitingarea`: 设置等待区域（执行两次设置两个点，使用玩家当前位置）（需要bw.admin权限）
+- `/bw setwaitingspawn`: 设置等待区出生点（使用玩家当前位置）（需要bw.admin权限）
+- `/bw setspawn <队伍颜色>`: 设置指定队伍的出生点（需要bw.admin权限）
+- `/bw setbed <队伍颜色>`: 设置指定队伍的床位置（需要bw.admin权限）
+- `/bw setshop`: 设置商店位置（需要bw.admin权限）
+- `/bw setupgrade`: 设置升级台位置（需要bw.admin权限）
+- `/bw setresource <资源类型>`: 设置指定类型的资源点位置（需要bw.admin权限）
+- `/bw setncp`: 设置NCP位置（需要bw.admin权限）
+- `/bw setbounds`: 设置游戏区域边界点（需要设置两个点）（需要bw.admin权限）
+- `/bw setmaxplayers <人数>`: 设置每队最大玩家数（默认4人）（需要bw.admin权限）
+- `/bw save`: 保存当前地图配置（需要bw.admin权限）

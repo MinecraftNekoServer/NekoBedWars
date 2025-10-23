@@ -1,21 +1,21 @@
-package neko.nekoBedWars.commands;
-
-import neko.nekoBedWars.NekoBedWars;
-import neko.nekoBedWars.GameArena;
-import neko.nekoBedWars.ArenaManager;
-import neko.nekoBedWars.gui.GameGUI;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+package neko.nekoBedWars.commands;
+
+import neko.nekoBedWars.NekoBedWars;
+import neko.nekoBedWars.GameArena;
+import neko.nekoBedWars.ArenaManager;
+import neko.nekoBedWars.gui.GameGUI;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class BWCommand implements CommandExecutor {
@@ -50,34 +50,37 @@ public class BWCommand implements CommandExecutor {
         Player player = (Player) sender;
         
         // 检查权限
-        if (args.length > 0 && !args[0].equalsIgnoreCase("join") && 
-            !args[0].equalsIgnoreCase("leave") && !args[0].equalsIgnoreCase("stats") &&
-            !args[0].equalsIgnoreCase("gui") && !player.hasPermission("nekobedwars.admin")) {
-            player.sendMessage("§c你没有权限使用这个指令");
-            return true;
+        if (args.length > 0 && !player.hasPermission("nekobedwars.admin")) {
+            // 某些指令不需要管理员权限
+            boolean needsAdmin = true;
+            switch (args[0].toLowerCase()) {
+                case "stats":
+                    needsAdmin = false;
+                    break;
+                // 其他不需要管理员权限的指令可以在这里添加
+            }
+            
+            if (needsAdmin) {
+                player.sendMessage("§c你没有权限使用这个指令");
+                return true;
+            }
         }
 
         if (args.length == 0) {
             player.sendMessage("§6§l起床战争插件");
-            player.sendMessage("§e/bw join <地图名称> §7- 加入指定地图游戏");
-            player.sendMessage("§e/bw leave §7- 离开当前游戏");
             player.sendMessage("§e/bw start §7- 强制开始当前游戏");
             player.sendMessage("§e/bw stop §7- 停止当前地图游戏");
             player.sendMessage("§e/bw reload §7- 重新加载配置文件");
             player.sendMessage("§e/bw stats §7- 查看个人游戏数据");
-            player.sendMessage("§e/bw gui §7- 打开图形界面快捷操作菜单");
-            player.sendMessage("§e/bw setwaitingarea §7- 设置等待区域点（执行两次设置两个点）");
-            player.sendMessage("§e/bw setwaitingspawn §7- 设置等待区出生点（使用当前位置）");
-            player.sendMessage("§e/bw game start §7- 启动游戏模式");
-            player.sendMessage("§e/bw game stop §7- 启动配置模式");
+            player.sendMessage("§e/bw setwaitingarea §7- 设置等待区域点（执行两次设置两个点）");
+            player.sendMessage("§e/bw setwaitingspawn §7- 设置等待区出生点（使用当前位置）");
+            player.sendMessage("§e/bw game start §7- 启动游戏模式");
+            player.sendMessage("§e/bw game stop §7- 启动配置模式");
             return true;
         }
 
         switch (args[0].toLowerCase()) {
-            case "join":
-                return handleJoinCommand(player, args);
-            case "leave":
-                return handleLeaveCommand(player);
+            
             case "start":
                 return handleStartCommand(player);
             case "stop":
@@ -86,33 +89,31 @@ public class BWCommand implements CommandExecutor {
                 return handleReloadCommand(player);
             case "stats":
                 return handleStatsCommand(player);
-            case "gui":
-                return handleGuiCommand(player);
             case "create":
                 return handleCreateCommand(player, args);
-            case "setwaitingarea":
-                return handleSetWaitingAreaCommand(player);
-            case "setwaitingspawn":
-                return handleSetWaitingSpawnCommand(player);
-            case "setspawn":
-                return handleSetSpawnCommand(player, args);
-            case "setbed":
-                return handleSetBedCommand(player, args);
-            case "setshop":
-                return handleSetShopCommand(player);
-            case "setupgrade":
-                return handleSetUpgradeCommand(player);
-            case "setresource":
-                return handleSetResourceCommand(player, args);
-            case "setncp":
-                return handleSetNcpCommand(player);
-            case "setbounds":
-                return handleSetBoundsCommand(player);
-            case "setmaxplayers":
-                return handleSetMaxPlayersCommand(player, args);
-            case "save":
-                return handleSaveCommand(player);
-            case "game":
+            case "setwaitingarea":
+                return handleSetWaitingAreaCommand(player);
+            case "setwaitingspawn":
+                return handleSetWaitingSpawnCommand(player);
+            case "setspawn":
+                return handleSetSpawnCommand(player, args);
+            case "setbed":
+                return handleSetBedCommand(player, args);
+            case "setshop":
+                return handleSetShopCommand(player);
+            case "setupgrade":
+                return handleSetUpgradeCommand(player);
+            case "setresource":
+                return handleSetResourceCommand(player, args);
+            case "setncp":
+                return handleSetNcpCommand(player);
+            case "setbounds":
+                return handleSetBoundsCommand(player);
+            case "setmaxplayers":
+                return handleSetMaxPlayersCommand(player, args);
+            case "save":
+                return handleSaveCommand(player);
+            case "game":
                 return handleGameCommand(player, args);
             default:
                 player.sendMessage("§c未知指令，使用 /bw 查看帮助");
@@ -120,109 +121,15 @@ public class BWCommand implements CommandExecutor {
         }
     }
 
-    private boolean handleJoinCommand(Player player, String[] args) {
-        if (args.length < 2) {
-            player.sendMessage("§c用法: /bw join <地图名称>");
-            return true;
-        }
-        
-        String arenaName = args[1];
-        GameArena arena = ArenaManager.getInstance().getArenas().get(arenaName);
-        
-        if (arena == null) {
-            player.sendMessage("§c地图 " + arenaName + " 不存在");
-            return true;
-        }
-        
-        // 检查是否处于配置模式
-        if (plugin.isConfigurationMode()) {
-            player.sendMessage("§c插件当前处于配置模式，无法加入游戏");
-            player.sendMessage("§e使用 /bw game start 切换到游戏模式");
-            return true;
-        }
-        
-        if (arena.addPlayer(player)) {
-            player.sendMessage("§a成功加入地图 " + arenaName);
-            
-            // 显示等待区域计分板
-            plugin.getWaitingScoreboard().addPlayer(player);
-            plugin.getWaitingScoreboard().updateScoreboard(arena);
-            
-            // 给玩家发放返回大厅物品
-            giveLobbyReturnItem(player);
-            
-            // 发送等待中的提示消息
-            sendWaitingMessages(player, arena);
-            
-            // 传送玩家到等待区域出生点
-            if (arena.getWaitingSpawnPoint() != null) {
-                player.teleport(arena.getWaitingSpawnPoint());
-                player.sendMessage("§a已传送到等待区域出生点");
-            } else {
-                player.sendMessage("§c警告: 未设置等待区域出生点，请联系管理员");
-            }
-        } else {
-            player.sendMessage("§c无法加入地图 " + arenaName + "，可能已满人或游戏已开始");
-        }
-        
-        return true;
-    }
-
-    /**
-     * 发送等待中的提示消息
-     */
-    private void sendWaitingMessages(Player player, GameArena arena) {
-        // 发送欢迎消息
-        player.sendMessage("§a欢迎加入起床战争游戏!");
-        player.sendMessage("§e你当前在等待区域，请等待其他玩家加入...");
-        
-        // 根据当前游戏状态发送不同消息
-        switch (arena.getState()) {
-            case WAITING:
-                int playerCount = arena.getPlayers().size();
-                int minPlayers = arena.getTeams().size() * 1;
-                int playersNeeded = Math.max(0, minPlayers - playerCount);
-                
-                if (playersNeeded > 0) {
-                    player.sendMessage("§e还需要 §b" + playersNeeded + " §e名玩家才能开始游戏");
-                } else {
-                    player.sendMessage("§a已满足开始条件，游戏即将开始!");
-                }
-                break;
-                
-            case STARTING:
-                player.sendMessage("§e游戏即将开始，请做好准备!");
-                break;
-                
-            case INGAME:
-                player.sendMessage("§c游戏正在进行中，你将作为观战者加入");
-                break;
-                
-            default:
-                player.sendMessage("§e请等待游戏开始...");
-                break;
-        }
-        
-        player.sendMessage("§7--------------------");
-        player.sendMessage("§b游戏提示:");
-        player.sendMessage("§f- 不要离开等待区域");
-        player.sendMessage("§f- 准备好迎接战斗!");
-        player.sendMessage("§7--------------------");
-    }
-
-    private boolean handleLeaveCommand(Player player) {
-        GameArena arena = ArenaManager.getInstance().getActiveArena();
-        if (arena != null) {
-            arena.removePlayer(player);
-            player.sendMessage("§a已离开游戏");
-            // TODO: 传送玩家到大厅
-        } else {
-            player.sendMessage("§c你不在游戏中");
-        }
-        return true;
-    }
+    
 
     private boolean handleStartCommand(Player player) {
+        // 检查权限
+        if (!player.hasPermission("nekobedwars.admin")) {
+            player.sendMessage("§c你没有权限使用这个指令");
+            return true;
+        }
+        
         GameArena arena = ArenaManager.getInstance().getActiveArena();
         if (arena != null) {
             if (arena.getState() == GameArena.GameState.WAITING || arena.getState() == GameArena.GameState.STARTING) {
@@ -239,6 +146,12 @@ public class BWCommand implements CommandExecutor {
     }
 
     private boolean handleStopCommand(Player player) {
+        // 检查权限
+        if (!player.hasPermission("nekobedwars.admin")) {
+            player.sendMessage("§c你没有权限使用这个指令");
+            return true;
+        }
+        
         GameArena arena = ArenaManager.getInstance().getActiveArena();
         if (arena != null) {
             arena.setState(GameArena.GameState.ENDING);
@@ -251,6 +164,12 @@ public class BWCommand implements CommandExecutor {
     }
 
     private boolean handleReloadCommand(Player player) {
+        // 检查权限
+        if (!player.hasPermission("nekobedwars.admin")) {
+            player.sendMessage("§c你没有权限使用这个指令");
+            return true;
+        }
+        
         plugin.reloadConfig();
         ArenaManager.getInstance().loadArenas();
         player.sendMessage("§a配置文件已重新加载");
@@ -267,14 +186,15 @@ public class BWCommand implements CommandExecutor {
         return true;
     }
 
-    private boolean handleGuiCommand(Player player) {
-        // 打开GUI界面
-        GameGUI gui = new GameGUI(player);
-        gui.openGUI();
-        return true;
-    }
+    
 
     private boolean handleCreateCommand(Player player, String[] args) {
+        // 检查权限
+        if (!player.hasPermission("nekobedwars.admin")) {
+            player.sendMessage("§c你没有权限使用这个指令");
+            return true;
+        }
+        
         // 检查是否处于配置模式
         if (!plugin.isConfigurationMode()) {
             player.sendMessage("§c插件当前处于游戏模式，无法执行配置指令");
@@ -318,6 +238,12 @@ public class BWCommand implements CommandExecutor {
     }
 
     private boolean handleSetWaitingAreaCommand(Player player) {
+        // 检查权限
+        if (!player.hasPermission("nekobedwars.admin")) {
+            player.sendMessage("§c你没有权限使用这个指令");
+            return true;
+        }
+        
         // 检查是否处于配置模式
         if (!plugin.isConfigurationMode()) {
             player.sendMessage("§c插件当前处于游戏模式，无法执行配置指令");
@@ -345,6 +271,12 @@ public class BWCommand implements CommandExecutor {
     }
 
     private boolean handleSetWaitingSpawnCommand(Player player) {
+        // 检查权限
+        if (!player.hasPermission("nekobedwars.admin")) {
+            player.sendMessage("§c你没有权限使用这个指令");
+            return true;
+        }
+        
         // 检查是否处于配置模式
         if (!plugin.isConfigurationMode()) {
             player.sendMessage("§c插件当前处于游戏模式，无法执行配置指令");
@@ -365,6 +297,12 @@ public class BWCommand implements CommandExecutor {
     }
 
     private boolean handleSetSpawnCommand(Player player, String[] args) {
+        // 检查权限
+        if (!player.hasPermission("nekobedwars.admin")) {
+            player.sendMessage("§c你没有权限使用这个指令");
+            return true;
+        }
+        
         // 检查是否处于配置模式
         if (!plugin.isConfigurationMode()) {
             player.sendMessage("§c插件当前处于游戏模式，无法执行配置指令");
@@ -395,6 +333,12 @@ public class BWCommand implements CommandExecutor {
     }
 
     private boolean handleSetBedCommand(Player player, String[] args) {
+        // 检查权限
+        if (!player.hasPermission("nekobedwars.admin")) {
+            player.sendMessage("§c你没有权限使用这个指令");
+            return true;
+        }
+        
         // 检查是否处于配置模式
         if (!plugin.isConfigurationMode()) {
             player.sendMessage("§c插件当前处于游戏模式，无法执行配置指令");
@@ -425,6 +369,12 @@ public class BWCommand implements CommandExecutor {
     }
 
     private boolean handleSetShopCommand(Player player) {
+        // 检查权限
+        if (!player.hasPermission("nekobedwars.admin")) {
+            player.sendMessage("§c你没有权限使用这个指令");
+            return true;
+        }
+        
         // 检查是否处于配置模式
         if (!plugin.isConfigurationMode()) {
             player.sendMessage("§c插件当前处于游戏模式，无法执行配置指令");
@@ -438,6 +388,12 @@ public class BWCommand implements CommandExecutor {
     }
 
     private boolean handleSetUpgradeCommand(Player player) {
+        // 检查权限
+        if (!player.hasPermission("nekobedwars.admin")) {
+            player.sendMessage("§c你没有权限使用这个指令");
+            return true;
+        }
+        
         // 检查是否处于配置模式
         if (!plugin.isConfigurationMode()) {
             player.sendMessage("§c插件当前处于游戏模式，无法执行配置指令");
@@ -451,6 +407,12 @@ public class BWCommand implements CommandExecutor {
     }
 
     private boolean handleSetResourceCommand(Player player, String[] args) {
+        // 检查权限
+        if (!player.hasPermission("nekobedwars.admin")) {
+            player.sendMessage("§c你没有权限使用这个指令");
+            return true;
+        }
+        
         // 检查是否处于配置模式
         if (!plugin.isConfigurationMode()) {
             player.sendMessage("§c插件当前处于游戏模式，无法执行配置指令");
@@ -470,6 +432,12 @@ public class BWCommand implements CommandExecutor {
     }
 
     private boolean handleSetNcpCommand(Player player) {
+        // 检查权限
+        if (!player.hasPermission("nekobedwars.admin")) {
+            player.sendMessage("§c你没有权限使用这个指令");
+            return true;
+        }
+        
         // 检查是否处于配置模式
         if (!plugin.isConfigurationMode()) {
             player.sendMessage("§c插件当前处于游戏模式，无法执行配置指令");
@@ -483,6 +451,12 @@ public class BWCommand implements CommandExecutor {
     }
 
     private boolean handleSetBoundsCommand(Player player) {
+        // 检查权限
+        if (!player.hasPermission("nekobedwars.admin")) {
+            player.sendMessage("§c你没有权限使用这个指令");
+            return true;
+        }
+        
         // 检查是否处于配置模式
         if (!plugin.isConfigurationMode()) {
             player.sendMessage("§c插件当前处于游戏模式，无法执行配置指令");
@@ -496,6 +470,12 @@ public class BWCommand implements CommandExecutor {
     }
 
     private boolean handleSetMaxPlayersCommand(Player player, String[] args) {
+        // 检查权限
+        if (!player.hasPermission("nekobedwars.admin")) {
+            player.sendMessage("§c你没有权限使用这个指令");
+            return true;
+        }
+        
         // 检查是否处于配置模式
         if (!plugin.isConfigurationMode()) {
             player.sendMessage("§c插件当前处于游戏模式，无法执行配置指令");
@@ -524,6 +504,12 @@ public class BWCommand implements CommandExecutor {
     }
 
     private boolean handleGameCommand(Player player, String[] args) {
+        // 检查权限
+        if (!player.hasPermission("nekobedwars.admin")) {
+            player.sendMessage("§c你没有权限使用这个指令");
+            return true;
+        }
+        
         if (args.length < 2) {
             player.sendMessage("§c用法: /bw game <start|stop>");
             return true;
@@ -541,6 +527,12 @@ public class BWCommand implements CommandExecutor {
     }
 
     private boolean handleGameStartCommand(Player player) {
+        // 检查权限
+        if (!player.hasPermission("nekobedwars.admin")) {
+            player.sendMessage("§c你没有权限使用这个指令");
+            return true;
+        }
+        
         // 检查是否已经配置完成
         GameArena arena = ArenaManager.getInstance().getActiveArena();
         if (arena == null) {
@@ -560,7 +552,7 @@ public class BWCommand implements CommandExecutor {
         plugin.saveConfig();
         
         // 输出日志
-        plugin.getLogger().info("地图 '" + arena.getName() + "' 已切换到游戏模式");
+        plugin.getLogger().info("地图  + arena.getName() +  已切换到游戏模式");
         
         player.sendMessage("§a游戏模式已启动");
         player.sendMessage("§e插件已切换到游戏模式，拒绝执行配置指令");
@@ -568,6 +560,12 @@ public class BWCommand implements CommandExecutor {
     }
 
     private boolean handleGameStopCommand(Player player) {
+        // 检查权限
+        if (!player.hasPermission("nekobedwars.admin")) {
+            player.sendMessage("§c你没有权限使用这个指令");
+            return true;
+        }
+        
         // 切换到配置模式
         plugin.setConfigurationMode(true);
         plugin.getConfig().set("arena.configured", true);
@@ -576,7 +574,7 @@ public class BWCommand implements CommandExecutor {
         // 输出日志
         GameArena arena = ArenaManager.getInstance().getActiveArena();
         if (arena != null) {
-            plugin.getLogger().info("地图 '" + arena.getName() + "' 已切换到配置模式");
+            plugin.getLogger().info("地图  + arena.getName() +  已切换到配置模式");
         }
         
         player.sendMessage("§a配置模式已启动");
@@ -623,157 +621,163 @@ public class BWCommand implements CommandExecutor {
         player.getInventory().setItem(7, ironIngotItem);
         player.getInventory().setItem(8, barrierItem);
         
-        player.sendMessage("§a配置工具已发放，请使用物品栏中的工具进行配置");
-    }
-    
-    private boolean handleSaveCommand(Player player) {
-        // 退出配置模式
-        createModePlayers.remove(player);
-        
-        // 保存配置到文件
-        saveArenaConfig();
-        
+        player.sendMessage("§a配置工具已发放，请使用物品栏中的工具进行配置");
+    }
+    
+    private boolean handleSaveCommand(Player player) {
+        // 检查权限
+        if (!player.hasPermission("nekobedwars.admin")) {
+            player.sendMessage("§c你没有权限使用这个指令");
+            return true;
+        }
+        
+        // 退出配置模式
+        createModePlayers.remove(player);
+        
+        // 保存配置到文件
+        saveArenaConfig();
+        
         player.sendMessage("§a地图配置已保存");
         // 标记插件配置完成
         plugin.getConfig().set("arena.configured", false);
         plugin.saveConfig();
         plugin.setConfigurationMode(false);
         
-        player.sendMessage("§e插件已切换到游戏模式");
-        return true;
-    }
-    
-    private void saveArenaConfig() {
-        GameArena arena = ArenaManager.getInstance().getActiveArena();
-        if (arena == null) return;
-        
-        // 获取配置文件
-        org.bukkit.configuration.file.FileConfiguration config = plugin.getConfig();
-        
-        // 保存地图基本信息
-        config.set("arena.name", arena.getName());
-        config.set("arena.world", arena.getWorld().getName());
-        
-        // 保存床位置
-        for (java.util.Map.Entry<String, Location> entry : arena.getBeds().entrySet()) {
-            String team = entry.getKey();
-            Location location = entry.getValue();
-            String locationStr = location.getX() + "," + location.getY() + "," + location.getZ();
-            config.set("arena.beds." + team, locationStr);
-        }
-        
-        // 保存出生点位置
-        for (java.util.Map.Entry<String, Location> entry : arena.getSpawns().entrySet()) {
-            String team = entry.getKey();
-            Location location = entry.getValue();
-            String locationStr = location.getX() + "," + location.getY() + "," + location.getZ();
-            config.set("arena.spawns." + team, locationStr);
-        }
-        
-        // 保存商店位置
-        java.util.List<String> shopLocations = new java.util.ArrayList<>();
-        for (Location location : arena.getShops()) {
-            String locationStr = location.getX() + "," + location.getY() + "," + location.getZ();
-            shopLocations.add(locationStr);
-        }
-        config.set("arena.shops", shopLocations);
-        
-        // 保存升级台位置
-        java.util.List<String> upgradeLocations = new java.util.ArrayList<>();
-        for (Location location : arena.getUpgrades()) {
-            String locationStr = location.getX() + "," + location.getY() + "," + location.getZ();
-            upgradeLocations.add(locationStr);
-        }
-        config.set("arena.upgrades", upgradeLocations);
-        
-        // 保存等待区域
-        if (arena.getWaitingAreaPos1() != null) {
-            Location pos1 = arena.getWaitingAreaPos1();
-            String pos1Str = pos1.getX() + "," + pos1.getY() + "," + pos1.getZ();
-            config.set("arena.waitingarea.pos1", pos1Str);
-        }
-        if (arena.getWaitingAreaPos2() != null) {
-            Location pos2 = arena.getWaitingAreaPos2();
-            String pos2Str = pos2.getX() + "," + pos2.getY() + "," + pos2.getZ();
-            config.set("arena.waitingarea.pos2", pos2Str);
-        }
-        
-        // 保存等待区出生点
-        if (arena.getWaitingSpawnPoint() != null) {
-            Location spawnPoint = arena.getWaitingSpawnPoint();
-            String spawnPointStr = spawnPoint.getX() + "," + spawnPoint.getY() + "," + spawnPoint.getZ();
-            config.set("arena.waitingspawn", spawnPointStr);
-        }
-        
-        // 保存资源点
-        for (Map.Entry<String, List<Location>> entry : arena.getResourcePoints().entrySet()) {
-            String resourceType = entry.getKey();
-            List<Location> locations = entry.getValue();
-            List<String> locationStrings = new ArrayList<>();
-            for (Location location : locations) {
-                String locationStr = location.getX() + "," + location.getY() + "," + location.getZ();
-                locationStrings.add(locationStr);
-            }
-            config.set("arena.resources." + resourceType, locationStrings);
-        }
-        
-        // 保存最大玩家数
-        config.set("arena.maxplayers", arena.getMaxPlayersPerTeam());
-        
-        // 保存队伍列表（从床的位置推断）
-        java.util.List<String> teams = new java.util.ArrayList<>(arena.getBeds().keySet());
-        config.set("arena.teams", teams);
-        
-        // 保存床状态
-        for (Map.Entry<String, Boolean> entry : arena.getBedDestroyed().entrySet()) {
-            String team = entry.getKey();
-            boolean destroyed = entry.getValue();
-            config.set("arena.bed-destroyed." + team, destroyed);
-        }
-        
-        // 保存配置文件
-        plugin.saveConfig();
-    }
-    
-    private void setItemDisplayName(org.bukkit.inventory.ItemStack item, String displayName, String lore) {
-        org.bukkit.inventory.meta.ItemMeta meta = item.getItemMeta();
-        if (meta != null) {
-            meta.setDisplayName(displayName);
-            java.util.List<String> loreList = new java.util.ArrayList<>();
-            loreList.add(lore);
-            meta.setLore(loreList);
-            item.setItemMeta(meta);
-        }
-    }
-    
-    private void teleportToCenter(Player player, GameArena arena) {
-        // 计算地图中心位置
-        Location center = player.getWorld().getSpawnLocation(); // 简化处理，使用世界出生点
-        player.teleport(center);
-        
-        // 设置玩家视角居中
-        player.setCompassTarget(center);
-        
-        player.sendMessage("§a已传送至地图中心");
-    }
-    
-    /**
-     * 给玩家发放返回大厅物品
-     */
-    private void giveLobbyReturnItem(Player player) {
-        // 创建返回大厅物品（粘液球）
-        ItemStack lobbyItem = new ItemStack(Material.SLIME_BALL, 1);
-        ItemMeta meta = lobbyItem.getItemMeta();
-        if (meta != null) {
-            meta.setDisplayName("§a返回大厅");
-            meta.setLore(java.util.Arrays.asList(
-                "§7右键点击返回大厅",
-                "§7再次点击可取消返回"
-            ));
-            lobbyItem.setItemMeta(meta);
-        }
-        
-        // 将物品放在玩家物品栏的第9格（索引8）
-        player.getInventory().setItem(8, lobbyItem);
-    }
+        player.sendMessage("§e插件已切换到游戏模式");
+        return true;
+    }
+    
+    private void saveArenaConfig() {
+        GameArena arena = ArenaManager.getInstance().getActiveArena();
+        if (arena == null) return;
+        
+        // 获取配置文件
+        org.bukkit.configuration.file.FileConfiguration config = plugin.getConfig();
+        
+        // 保存地图基本信息
+        config.set("arena.name", arena.getName());
+        config.set("arena.world", arena.getWorld().getName());
+        
+        // 保存床位置
+        for (java.util.Map.Entry<String, Location> entry : arena.getBeds().entrySet()) {
+            String team = entry.getKey();
+            Location location = entry.getValue();
+            String locationStr = location.getX() + "," + location.getY() + "," + location.getZ();
+            config.set("arena.beds." + team, locationStr);
+        }
+        
+        // 保存出生点位置
+        for (java.util.Map.Entry<String, Location> entry : arena.getSpawns().entrySet()) {
+            String team = entry.getKey();
+            Location location = entry.getValue();
+            String locationStr = location.getX() + "," + location.getY() + "," + location.getZ();
+            config.set("arena.spawns." + team, locationStr);
+        }
+        
+        // 保存商店位置
+        java.util.List<String> shopLocations = new java.util.ArrayList<>();
+        for (Location location : arena.getShops()) {
+            String locationStr = location.getX() + "," + location.getY() + "," + location.getZ();
+            shopLocations.add(locationStr);
+        }
+        config.set("arena.shops", shopLocations);
+        
+        // 保存升级台位置
+        java.util.List<String> upgradeLocations = new java.util.ArrayList<>();
+        for (Location location : arena.getUpgrades()) {
+            String locationStr = location.getX() + "," + location.getY() + "," + location.getZ();
+            upgradeLocations.add(locationStr);
+        }
+        config.set("arena.upgrades", upgradeLocations);
+        
+        // 保存等待区域
+        if (arena.getWaitingAreaPos1() != null) {
+            Location pos1 = arena.getWaitingAreaPos1();
+            String pos1Str = pos1.getX() + "," + pos1.getY() + "," + pos1.getZ();
+            config.set("arena.waitingarea.pos1", pos1Str);
+        }
+        if (arena.getWaitingAreaPos2() != null) {
+            Location pos2 = arena.getWaitingAreaPos2();
+            String pos2Str = pos2.getX() + "," + pos2.getY() + "," + pos2.getZ();
+            config.set("arena.waitingarea.pos2", pos2Str);
+        }
+        
+        // 保存等待区出生点
+        if (arena.getWaitingSpawnPoint() != null) {
+            Location spawnPoint = arena.getWaitingSpawnPoint();
+            String spawnPointStr = spawnPoint.getX() + "," + spawnPoint.getY() + "," + spawnPoint.getZ();
+            config.set("arena.waitingspawn", spawnPointStr);
+        }
+        
+        // 保存资源点
+        for (Map.Entry<String, List<Location>> entry : arena.getResourcePoints().entrySet()) {
+            String resourceType = entry.getKey();
+            List<Location> locations = entry.getValue();
+            List<String> locationStrings = new ArrayList<>();
+            for (Location location : locations) {
+                String locationStr = location.getX() + "," + location.getY() + "," + location.getZ();
+                locationStrings.add(locationStr);
+            }
+            config.set("arena.resources." + resourceType, locationStrings);
+        }
+        
+        // 保存最大玩家数
+        config.set("arena.maxplayers", arena.getMaxPlayersPerTeam());
+        
+        // 保存队伍列表（从床的位置推断）
+        java.util.List<String> teams = new java.util.ArrayList<>(arena.getBeds().keySet());
+        config.set("arena.teams", teams);
+        
+        // 保存床状态
+        for (Map.Entry<String, Boolean> entry : arena.getBedDestroyed().entrySet()) {
+            String team = entry.getKey();
+            boolean destroyed = entry.getValue();
+            config.set("arena.bed-destroyed." + team, destroyed);
+        }
+        
+        // 保存配置文件
+        plugin.saveConfig();
+    }
+    
+    private void setItemDisplayName(org.bukkit.inventory.ItemStack item, String displayName, String lore) {
+        org.bukkit.inventory.meta.ItemMeta meta = item.getItemMeta();
+        if (meta != null) {
+            meta.setDisplayName(displayName);
+            java.util.List<String> loreList = new java.util.ArrayList<>();
+            loreList.add(lore);
+            meta.setLore(loreList);
+            item.setItemMeta(meta);
+        }
+    }
+    
+    private void teleportToCenter(Player player, GameArena arena) {
+        // 计算地图中心位置
+        Location center = player.getWorld().getSpawnLocation(); // 简化处理，使用世界出生点
+        player.teleport(center);
+        
+        // 设置玩家视角居中
+        player.setCompassTarget(center);
+        
+        player.sendMessage("§a已传送至地图中心");
+    }
+    
+    /**
+     * 给玩家发放返回大厅物品
+     */
+    private void giveLobbyReturnItem(Player player) {
+        // 创建返回大厅物品（粘液球）
+        ItemStack lobbyItem = new ItemStack(Material.SLIME_BALL, 1);
+        ItemMeta meta = lobbyItem.getItemMeta();
+        if (meta != null) {
+            meta.setDisplayName("§a返回大厅");
+            meta.setLore(java.util.Arrays.asList(
+                "§7右键点击返回大厅",
+                "§7再次点击可取消返回"
+            ));
+            lobbyItem.setItemMeta(meta);
+        }
+        
+        // 将物品放在玩家物品栏的第9格（索引8）
+        player.getInventory().setItem(8, lobbyItem);
+    }
 }
