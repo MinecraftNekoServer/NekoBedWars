@@ -62,9 +62,11 @@ public class BWCommand implements CommandExecutor {
             player.sendMessage("§e/bw stop §7- 停止当前地图游戏");
             player.sendMessage("§e/bw reload §7- 重新加载配置文件");
             player.sendMessage("§e/bw stats §7- 查看个人游戏数据");
-            player.sendMessage("§e/bw gui §7- 打开图形界面快捷操作菜单");
-            player.sendMessage("§e/bw setwaitingarea §7- 设置等待区域点（执行两次设置两个点）");
-            player.sendMessage("§e/bw setwaitingspawn §7- 设置等待区出生点（使用当前位置）");
+            player.sendMessage("§e/bw gui §7- 打开图形界面快捷操作菜单");
+            player.sendMessage("§e/bw setwaitingarea §7- 设置等待区域点（执行两次设置两个点）");
+            player.sendMessage("§e/bw setwaitingspawn §7- 设置等待区出生点（使用当前位置）");
+            player.sendMessage("§e/bw game start §7- 启动游戏模式");
+            player.sendMessage("§e/bw game stop §7- 启动配置模式");
             return true;
         }
 
@@ -106,7 +108,9 @@ public class BWCommand implements CommandExecutor {
             case "setmaxplayers":
                 return handleSetMaxPlayersCommand(player, args);
             case "save":
-                return handleSaveCommand(player);
+                return handleSaveCommand(player);
+            case "game":
+                return handleGameCommand(player, args);
             default:
                 player.sendMessage("§c未知指令，使用 /bw 查看帮助");
                 return true;
@@ -202,6 +206,13 @@ public class BWCommand implements CommandExecutor {
     }
 
     private boolean handleCreateCommand(Player player, String[] args) {
+        // 检查是否处于配置模式
+        if (!plugin.isConfigurationMode()) {
+            player.sendMessage("§c插件当前处于游戏模式，无法执行配置指令");
+            player.sendMessage("§e使用 /bw game stop 切换到配置模式");
+            return true;
+        }
+        
         if (args.length < 2) {
             player.sendMessage("§c用法: /bw create <地图名称>");
             return true;
@@ -209,8 +220,9 @@ public class BWCommand implements CommandExecutor {
         
         String arenaName = args[1];
         
-        // 检查是否已存在同名地图
-        if (ArenaManager.getInstance().getArenas().containsKey(arenaName)) {
+        // 检查配置文件中是否已存在同名地图
+        String existingArenaName = plugin.getConfig().getString("arena.name");
+        if (existingArenaName != null && existingArenaName.equals(arenaName)) {
             player.sendMessage("§c地图 " + arenaName + " 已存在");
             return true;
         }
@@ -237,6 +249,13 @@ public class BWCommand implements CommandExecutor {
     }
 
     private boolean handleSetWaitingAreaCommand(Player player) {
+        // 检查是否处于配置模式
+        if (!plugin.isConfigurationMode()) {
+            player.sendMessage("§c插件当前处于游戏模式，无法执行配置指令");
+            player.sendMessage("§e使用 /bw game stop 切换到配置模式");
+            return true;
+        }
+        
         GameArena arena = ArenaManager.getInstance().getActiveArena();
         if (arena != null) {
             // 使用玩家当前位置作为等待区域的一个点
@@ -257,6 +276,13 @@ public class BWCommand implements CommandExecutor {
     }
 
     private boolean handleSetWaitingSpawnCommand(Player player) {
+        // 检查是否处于配置模式
+        if (!plugin.isConfigurationMode()) {
+            player.sendMessage("§c插件当前处于游戏模式，无法执行配置指令");
+            player.sendMessage("§e使用 /bw game stop 切换到配置模式");
+            return true;
+        }
+        
         GameArena arena = ArenaManager.getInstance().getActiveArena();
         if (arena != null) {
             // 使用玩家当前位置作为等待区出生点
@@ -270,6 +296,13 @@ public class BWCommand implements CommandExecutor {
     }
 
     private boolean handleSetSpawnCommand(Player player, String[] args) {
+        // 检查是否处于配置模式
+        if (!plugin.isConfigurationMode()) {
+            player.sendMessage("§c插件当前处于游戏模式，无法执行配置指令");
+            player.sendMessage("§e使用 /bw game stop 切换到配置模式");
+            return true;
+        }
+        
         if (args.length < 2) {
             player.sendMessage("§c用法: /bw setspawn <队伍颜色>");
             return true;
@@ -293,6 +326,13 @@ public class BWCommand implements CommandExecutor {
     }
 
     private boolean handleSetBedCommand(Player player, String[] args) {
+        // 检查是否处于配置模式
+        if (!plugin.isConfigurationMode()) {
+            player.sendMessage("§c插件当前处于游戏模式，无法执行配置指令");
+            player.sendMessage("§e使用 /bw game stop 切换到配置模式");
+            return true;
+        }
+        
         if (args.length < 2) {
             player.sendMessage("§c用法: /bw setbed <队伍颜色>");
             return true;
@@ -316,18 +356,39 @@ public class BWCommand implements CommandExecutor {
     }
 
     private boolean handleSetShopCommand(Player player) {
+        // 检查是否处于配置模式
+        if (!plugin.isConfigurationMode()) {
+            player.sendMessage("§c插件当前处于游戏模式，无法执行配置指令");
+            player.sendMessage("§e使用 /bw game stop 切换到配置模式");
+            return true;
+        }
+        
         shopSelectionMode.add(player);
         player.sendMessage("§a请左键点击设置商店位置");
         return true;
     }
 
     private boolean handleSetUpgradeCommand(Player player) {
+        // 检查是否处于配置模式
+        if (!plugin.isConfigurationMode()) {
+            player.sendMessage("§c插件当前处于游戏模式，无法执行配置指令");
+            player.sendMessage("§e使用 /bw game stop 切换到配置模式");
+            return true;
+        }
+        
         upgradeSelectionMode.add(player);
         player.sendMessage("§a请左键点击设置升级台位置");
         return true;
     }
 
     private boolean handleSetResourceCommand(Player player, String[] args) {
+        // 检查是否处于配置模式
+        if (!plugin.isConfigurationMode()) {
+            player.sendMessage("§c插件当前处于游戏模式，无法执行配置指令");
+            player.sendMessage("§e使用 /bw game stop 切换到配置模式");
+            return true;
+        }
+        
         if (args.length < 2) {
             player.sendMessage("§c用法: /bw setresource <资源类型>");
             return true;
@@ -340,18 +401,39 @@ public class BWCommand implements CommandExecutor {
     }
 
     private boolean handleSetNcpCommand(Player player) {
+        // 检查是否处于配置模式
+        if (!plugin.isConfigurationMode()) {
+            player.sendMessage("§c插件当前处于游戏模式，无法执行配置指令");
+            player.sendMessage("§e使用 /bw game stop 切换到配置模式");
+            return true;
+        }
+        
         ncpSelectionMode.add(player);
         player.sendMessage("§a请左键点击设置NCP位置");
         return true;
     }
 
     private boolean handleSetBoundsCommand(Player player) {
+        // 检查是否处于配置模式
+        if (!plugin.isConfigurationMode()) {
+            player.sendMessage("§c插件当前处于游戏模式，无法执行配置指令");
+            player.sendMessage("§e使用 /bw game stop 切换到配置模式");
+            return true;
+        }
+        
         boundsSelectionMode.add(player);
         player.sendMessage("§a请左键点击选择游戏区域边界的第一点");
         return true;
     }
 
     private boolean handleSetMaxPlayersCommand(Player player, String[] args) {
+        // 检查是否处于配置模式
+        if (!plugin.isConfigurationMode()) {
+            player.sendMessage("§c插件当前处于游戏模式，无法执行配置指令");
+            player.sendMessage("§e使用 /bw game stop 切换到配置模式");
+            return true;
+        }
+        
         if (args.length < 2) {
             player.sendMessage("§c用法: /bw setmaxplayers <人数>");
             return true;
@@ -369,6 +451,67 @@ public class BWCommand implements CommandExecutor {
         } catch (NumberFormatException e) {
             player.sendMessage("§c人数必须是数字");
         }
+        return true;
+    }
+
+    private boolean handleGameCommand(Player player, String[] args) {
+        if (args.length < 2) {
+            player.sendMessage("§c用法: /bw game <start|stop>");
+            return true;
+        }
+        
+        switch (args[1].toLowerCase()) {
+            case "start":
+                return handleGameStartCommand(player);
+            case "stop":
+                return handleGameStopCommand(player);
+            default:
+                player.sendMessage("§c未知指令，使用 /bw game <start|stop>");
+                return true;
+        }
+    }
+
+    private boolean handleGameStartCommand(Player player) {
+        // 检查是否已经配置完成
+        GameArena arena = ArenaManager.getInstance().getActiveArena();
+        if (arena == null) {
+            player.sendMessage("§c没有激活的地图，请先创建地图");
+            return true;
+        }
+        
+        // 检查基本配置是否完成
+        if (arena.getBeds().isEmpty() || arena.getSpawns().isEmpty()) {
+            player.sendMessage("§c地图配置不完整，请先完成基本配置");
+            return true;
+        }
+        
+        // 切换到游戏模式
+        plugin.setConfigurationMode(false);
+        plugin.getConfig().set("arena.configured", false);
+        plugin.saveConfig();
+        
+        // 输出日志
+        plugin.getLogger().info("地图 '" + arena.getName() + "' 已切换到游戏模式");
+        
+        player.sendMessage("§a游戏模式已启动");
+        player.sendMessage("§e插件已切换到游戏模式，拒绝执行配置指令");
+        return true;
+    }
+
+    private boolean handleGameStopCommand(Player player) {
+        // 切换到配置模式
+        plugin.setConfigurationMode(true);
+        plugin.getConfig().set("arena.configured", true);
+        plugin.saveConfig();
+        
+        // 输出日志
+        GameArena arena = ArenaManager.getInstance().getActiveArena();
+        if (arena != null) {
+            plugin.getLogger().info("地图 '" + arena.getName() + "' 已切换到配置模式");
+        }
+        
+        player.sendMessage("§a配置模式已启动");
+        player.sendMessage("§e插件已切换到配置模式，可以执行配置指令");
         return true;
     }
 
@@ -421,7 +564,13 @@ public class BWCommand implements CommandExecutor {
         // 保存配置到文件
         saveArenaConfig();
         
-        player.sendMessage("§a地图配置已保存");
+        player.sendMessage("§a地图配置已保存");
+        // 标记插件配置完成
+        plugin.getConfig().set("arena.configured", false);
+        plugin.saveConfig();
+        plugin.setConfigurationMode(false);
+        
+        player.sendMessage("§e插件已切换到游戏模式");
         return true;
     }
     

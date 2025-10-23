@@ -162,14 +162,35 @@ public class ArenaManager {
                 arena.setMaxPlayersPerTeam(maxPlayers);
                 
                 // 加载队伍列表
+
                 if (config.contains("arena.teams")) {
+
                     arena.getTeams().addAll(config.getStringList("arena.teams"));
+
                 }
+
                 
+
                 arenas.put(arenaName, arena);
+
                 activeArena = arena;
+
+                
+
+                // 标记插件配置完成
+
+                NekoBedWars.getInstance().setConfigurationMode(false);
+
+                
+
+                // 输出日志
+
+                NekoBedWars.getInstance().getLogger().info("成功加载地图: " + arenaName);
+
             }
+
         }
+
     }
 
     private Location parseLocation(String locationStr, World world) {

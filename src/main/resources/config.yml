@@ -1,72 +1,107 @@
 # 🌙 NekoBedWars 配置文件 ✧ 二次元幻想版 ✧
 # 喵～欢迎来到梦幻次元的起床战争世界！
 # 可爱是力量，信仰是胜利 ฅ(≚ᄌ≚)~♡
-
+#
 # 🐾 数据库配置
 database:
-  type: "MySQL"  # 支持 MySQL / SQLite
+  type: MySQL
   mysql:
-    host: "localhost"
+    host: localhost
     port: 3306
-    database: "nekobedwars"
-    username: "root"
-    password: "wcjs123"
-    # path: "db.sql" # 若使用 SQLite 请启用此项喵~
-
-# 🏰 默认地图配置
+    database: nekobedwars
+    username: root
+    password: wcjs123
 arena:
-  name: "梦幻之境" # 地图名称喵～
-  world: "bedwars_world"
-  beds: {}        # 各队床位置（通过游戏内指令设置）
-  spawns: {}      # 玩家出生点位
-  shops: []       # 商店NPC配置
-  upgrades: []    # 升级NPC配置
+  name: 彼岸
+  world: World
+  beds:
+    red: -67.0,64.0,1.0
+    green: 66.0,64.0,1.0
+    blue: 0.0,64.0,-66.0
+    yellow: 0.0,64.0,67.0
+  spawns:
+    red: -79.0,62.0,1.0
+    green: 78.0,62.0,1.0
+    blue: 0.0,62.0,-78.0
+    yellow: 0.0,62.0,80.0
+  shops:
+    - -79.0,62.0,7.0
+    - -6.0,62.0,81.0
+    - 80.0,63.0,8.0
+    - 7.0,63.0,-79.0
+  upgrades:
+    - -79.0,62.0,-5.0
+    - 6.0,62.0,80.0
+    - 79.0,63.0,-6.0
+    - -7.0,63.0,-78.0
   waitingarea:
-    pos1: ""
-    pos2: ""
-  maxplayers: 16   # 最多16位萌萌勇者！
-  teams: []       # 队伍配置（红蓝黄绿喵~）
-
-# ✨ 粒子效果配置 ✨
+    pos1: 12.204299817818505,127.60564412531888,12.932838162517566
+    pos2: -10.174967683224907,112.99009138452796,-10.931412867034023
+  maxplayers: 4
+  teams:
+    - red
+    - green
+    - blue
+    - yellow
+  waitingspawn: 0.5677654917165047,118.0,0.5062195591216321
+  resources:
+    diamond:
+      - -44.0,63.0,48.0
+      - 47.0,63.0,45.0
+      - 44.0,63.0,-46.0
+      - -47.0,63.0,-43.0
+    iron:
+      - -83.0,62.0,2.0
+      - -83.0,62.0,1.0
+      - -83.0,62.0,0.0
+      - 1.0,62.0,84.0
+      - 0.0,62.0,84.0
+      - -1.0,62.0,84.0
+      - 83.0,62.0,0.0
+      - 83.0,62.0,1.0
+      - 83.0,62.0,2.0
+      - -1.0,62.0,-82.0
+      - 0.0,62.0,-82.0
+      - 1.0,62.0,-82.0
+    emerald:
+      - 0.0,64.0,1.0
+      - 0.0,83.0,1.0
 effects:
   bed_destroy:
-    type: "REDSTONE"
-    color: "LIGHT_PINK"  # 床碎裂时闪烁粉红光粒喵☆
+    type: REDSTONE
+    color: LIGHT_PINK
   player_death:
-    type: "CLOUD"
+    type: CLOUD
   resource_generate:
-    type: "SPELL_MOB_AMBIENT"  # 萌萌魔法能量聚集✨
-
-# 🎵 音效配置 🎵
+    type: SPELL_MOB_AMBIENT
 sounds:
   bed_destroy:
-    type: "ENTITY_ENDERDRAGON_GROWL"
+    type: ENTITY_ENDERDRAGON_GROWL
     volume: 1.2
     pitch: 1.0
   player_death:
-    type: "ENTITY_CAT_HURT" # 喵喵的哀鸣~
+    type: ENTITY_CAT_HURT
     volume: 1.0
     pitch: 1.2
   game_start:
-    type: "BLOCK_NOTE_BLOCK_PLING"
+    type: BLOCK_NOTE_BLOCK_PLING
     volume: 1.0
     pitch: 1.8
   game_end:
-    type: "ENTITY_PLAYER_LEVELUP"
+    type: ENTITY_PLAYER_LEVELUP
     volume: 1.0
     pitch: 1.5
-
-# 💫 计分板配置（梦幻版） 💫
 scoreboard:
-  title: "&d✦ &b&l梦幻次元 &d✦"
+  title: '&d✦ &b&l梦幻次元 &d✦'
   lines:
-    - "&r&f地图: &d{arena}"
-    - "&f玩家: &b{players}&7/&b{maxplayers}"
-    - "&f队伍: &a{teams}"
-    - ""
-    - "&f床剩余: &c{beds}"
-    - "&f击杀数: &e{kills}"
-    - ""
-    - "&d✧ &b为信仰而战喵~! &d✧"
-    - "&fPowered by &dNekoTeam☆"
-
+    - '&r&f地图: &d{arena}'
+    - '&f玩家: &b{players}&7/&b{maxplayers}'
+    - '&f队伍: &a{teams}'
+    - ''
+    - '&f床剩余: &c{beds}'
+    - '&f击杀数: &e{kills}'
+    - ''
+    - '&d✧ &b为信仰而战喵~! &d✧'
+    - '&fPowered by &dNekoTeam☆'
+arena:
+  configured: false

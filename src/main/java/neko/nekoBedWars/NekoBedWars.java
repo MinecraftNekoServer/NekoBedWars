@@ -22,6 +22,7 @@ public final class NekoBedWars extends JavaPlugin {
     private Logger logger;
     private PlayerData playerData;
     private GUIListener guiListener;
+    private boolean configurationMode = true; // 配置模式标记，默认为true
 
     @Override
     public void onEnable() {
@@ -33,12 +34,28 @@ public final class NekoBedWars extends JavaPlugin {
         saveDefaultConfig();
         config = getConfig();
         
+        // 检查是否已经配置完成
+        checkConfigurationStatus();
+        
         // 初始化数据库连接
         initializeDatabase();
         
         // 初始化玩家数据管理器
         if (databaseConnection != null) {
             playerData = new PlayerData(databaseConnection);
+        }
+        
+        // 加载地图配置
+        ArenaManager.getInstance().loadArenas();
+        
+        // 输出当前地图信息
+        GameArena activeArena = ArenaManager.getInstance().getActiveArena();
+        if (activeArena != null) {
+            logger.info("当前激活地图: " + activeArena.getName());
+            logger.info("插件模式: " + (configurationMode ? "配置模式" : "游戏模式"));
+        } else {
+            logger.info("当前没有激活的地图");
+            logger.info("插件模式: " + (configurationMode ? "配置模式" : "游戏模式"));
         }
         
         // 注册指令和事件监听器
@@ -97,6 +114,11 @@ public final class NekoBedWars extends JavaPlugin {
         }
     }
     
+    private void checkConfigurationStatus() {
+        // 检查配置文件中是否已标记为配置完成
+        configurationMode = config.getBoolean("arena.configured", true);
+    }
+    
     private void registerCommands() {
         // 注册BW指令
         PluginCommand bwCommand = getCommand("bw");
@@ -142,5 +164,13 @@ public final class NekoBedWars extends JavaPlugin {
     
     public GUIListener getGuiListener() {
         return guiListener;
+    }
+    
+    public boolean isConfigurationMode() {
+        return configurationMode;
+    }
+    
+    public void setConfigurationMode(boolean configurationMode) {
+        this.configurationMode = configurationMode;
     }
 }
