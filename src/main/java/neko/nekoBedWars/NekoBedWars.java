@@ -2,13 +2,7 @@ package neko.nekoBedWars;
 
 import neko.nekoBedWars.commands.BWCommand;
 import neko.nekoBedWars.database.PlayerData;
-import neko.nekoBedWars.listeners.GUIListener;
-import neko.nekoBedWars.listeners.HungerListener;
-import neko.nekoBedWars.listeners.LobbyReturnListener;
-import neko.nekoBedWars.listeners.PlayerInteractListener;
-import neko.nekoBedWars.listeners.PlayerJoinListener;
-import neko.nekoBedWars.listeners.PVPListener;
-import neko.nekoBedWars.listeners.WaitingAreaListener;
+import neko.nekoBedWars.listeners.*;
 import neko.nekoBedWars.scoreboard.GameScoreboard;
 import neko.nekoBedWars.scoreboard.WaitingScoreboard;
 import neko.nekoBedWars.utils.BungeeCordHelper;
@@ -172,6 +166,9 @@ public final class NekoBedWars extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new HungerListener(this), this);
         Bukkit.getPluginManager().registerEvents(new PVPListener(this), this);
         Bukkit.getPluginManager().registerEvents(new LobbyReturnListener(this), this);
+        // Bukkit.getPluginManager().registerEvents(new BedBreakListener(this), this);
+        // Bukkit.getPluginManager().registerEvents(new ResourceGenerationListener(this), this);
+        // Bukkit.getPluginManager().registerEvents(new PlayerEquipmentListener(this), this);
         
         // 注册BungeeCord插件通道
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");

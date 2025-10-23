@@ -1,8 +1,9 @@
 package neko.nekoBedWars.commands;
 
-import neko.nekoBedWars.NekoBedWars;
-import neko.nekoBedWars.GameArena;
-import neko.nekoBedWars.ArenaManager;
+import neko.nekoBedWars.NekoBedWars;
+import neko.nekoBedWars.GameArena;
+import neko.nekoBedWars.ArenaManager;
+import neko.nekoBedWars.GameManager;
 import neko.nekoBedWars.gui.GameGUI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -123,26 +124,38 @@ public class BWCommand implements CommandExecutor {
 
     
 
-    private boolean handleStartCommand(Player player) {
-        // 检查权限
-        if (!player.hasPermission("nekobedwars.admin")) {
-            player.sendMessage("§c你没有权限使用这个指令");
-            return true;
-        }
-        
-        GameArena arena = ArenaManager.getInstance().getActiveArena();
-        if (arena != null) {
-            if (arena.getState() == GameArena.GameState.WAITING || arena.getState() == GameArena.GameState.STARTING) {
-                arena.setState(GameArena.GameState.INGAME);
-                player.sendMessage("§a游戏已开始");
-                // TODO: 实现游戏开始逻辑
-            } else {
-                player.sendMessage("§c游戏已在进行中或无法开始");
-            }
-        } else {
-            player.sendMessage("§c没有激活的地图");
-        }
-        return true;
+    private boolean handleStartCommand(Player player) {
+        // 检查权限
+        if (!player.hasPermission("nekobedwars.admin")) {
+            player.sendMessage("§c你没有权限使用这个指令");
+            return true;
+        }
+        
+        GameArena arena = ArenaManager.getInstance().getActiveArena();
+        if (arena != null) {
+            if (arena.getState() == GameArena.GameState.WAITING || arena.getState() == GameArena.GameState.STARTING) {
+                // 检查是否有玩家在对局中
+                if (arena.getPlayers().isEmpty()) {
+                    player.sendMessage("§c当前没有玩家在对局中");
+                    return true;
+                }
+                
+                // 强制开始游戏
+                GameManager gameManager = plugin.getGameManager();
+                if (gameManager != null) {
+                    // 直接开始游戏（队伍分配将在游戏开始时处理）
+                    gameManager.startGameImmediately();
+                    player.sendMessage("§a游戏已强制开始");
+                } else {
+                    player.sendMessage("§c游戏管理器未初始化");
+                }
+            } else {
+                player.sendMessage("§c游戏已在进行中或无法开始");
+            }
+        } else {
+            player.sendMessage("§c没有激活的地图");
+        }
+        return true;
     }
 
     private boolean handleStopCommand(Player player) {

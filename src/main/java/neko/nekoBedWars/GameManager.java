@@ -10,6 +10,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+import java.util.*;
 
 public class GameManager {
     private NekoBedWars plugin;
@@ -202,29 +203,39 @@ public class GameManager {
         }.runTaskTimer(plugin, 0L, 20L); // 每秒执行一次
     }
 
-    /**
-     * 开始游戏
-     */
-    private void startGame() {
-        arena.setState(GameArena.GameState.INGAME);
-        gameStarted = true;
-        
-        // 向所有玩家发送游戏开始消息
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (arena.getPlayers().contains(player.getUniqueId())) {
-                player.sendMessage(ChatColor.GREEN + "游戏开始!");
-                
-                // 切换到游戏计分板
-                plugin.getGameScoreboard().addPlayer(player);
-                plugin.getGameScoreboard().updateScoreboard(arena);
-                
-                // 为玩家分配队伍和传送位置
-                assignPlayerTeamAndTeleport(player);
-            }
-        }
-        
-        // 更新计分板
-        updateScoreboard();
+    /**
+     * 开始游戏
+     */
+    private void startGame() {
+        arena.setState(GameArena.GameState.INGAME);
+        gameStarted = true;
+        
+        // 平衡分配队伍
+        balanceTeams(arena);
+        
+        // 向所有玩家发送游戏开始消息
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (arena.getPlayers().contains(player.getUniqueId())) {
+                player.sendMessage(ChatColor.GREEN + "游戏开始!");
+                
+                // 切换到游戏计分板
+                plugin.getGameScoreboard().addPlayer(player);
+                plugin.getGameScoreboard().updateScoreboard(arena);
+                
+                // 为玩家分配队伍和传送位置
+                assignPlayerTeamAndTeleport(player);
+                
+                // 获取玩家队伍
+                String team = arena.getPlayerTeams().get(player.getUniqueId());
+                if (team != null) {
+                    // 装备队伍护甲和给予木剑
+                    // 暂时跳过装备逻辑，直到我们重新实现它
+                }
+            }
+        }
+        
+        // 更新计分板
+        updateScoreboard();
     }
 
     /**
@@ -259,6 +270,50 @@ public class GameManager {
     }
 
     /**
+     * 立即开始游戏（用于强制开始）
+     */
+    public void startGameImmediately() {
+        // 取消倒计时任务（如果存在）
+        if (countdownTask != null) {
+            countdownTask.cancel();
+            countdownTask = null;
+        }
+        
+        // 开始游戏
+        startGame();
+    }
+
+    /**
+     * 平衡分配队伍
+     */
+    private void balanceTeams(GameArena arena) {
+        List<UUID> players = new ArrayList<>(arena.getPlayers());
+        List<String> teams = new ArrayList<>(arena.getTeams());
+        
+        // 清除之前的队伍分配
+        arena.getPlayerTeams().clear();
+        for (String team : teams) {
+            arena.getTeamPlayersCount().put(team, 0);
+        }
+        
+        // 如果玩家数少于队伍数，只使用必要的队伍数
+        int teamsToUse = Math.min(players.size(), teams.size());
+        
+        // 平衡分配玩家到队伍
+        for (int i = 0; i < players.size(); i++) {
+            Player player = Bukkit.getPlayer(players.get(i));
+            if (player != null) {
+                String team = teams.get(i % teamsToUse);
+                arena.getPlayerTeams().put(player.getUniqueId(), team);
+                arena.getTeamPlayersCount().put(team, arena.getTeamPlayersCount().get(team) + 1);
+                
+                // 发送队伍分配消息
+                player.sendMessage(ChatColor.GREEN + "你已被分配到 " + team + " 队");
+            }
+        }
+    }
+
+    /**
      * 结束游戏
      */
     private void endGame() {
@@ -281,12 +336,12 @@ public class GameManager {
         // 更新玩家统计数据
         updatePlayerStats();
         
-        // 启动服务器重启倒计时
-        startRestartCountdown();
-    }
+        // 启动服务器重启倒计时
+        startRestartCountdown();
+    }
 
-    /**
-     * 确定胜利队伍
+    /**
+     * 确定胜利队伍
      */
     private String determineWinner() {
         // 查找还有床且还有玩家的队伍
